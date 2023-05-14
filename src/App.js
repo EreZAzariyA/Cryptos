@@ -203,7 +203,7 @@ function App() {
               loading={coins.length === 0}
               expandable={{ expandedRowRender: (record) => {
                 return (
-                  <div style={{margin: 0, padding: '10px', maxHeight: '400px', height: 'min(100% - 100px)'}} key={record.id}>
+                  <div style={{margin: 0, padding: '10px', maxHeight: '90%', height: '300px', width: '100%'}} key={record.id}>
                     <Paragraph coin={record} selectedRange={selectedRange} />
                     
                     <Radio.Group onChange={onRangeChange} defaultValue={selectedRange}>
