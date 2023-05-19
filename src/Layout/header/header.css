@@ -1,13 +1,5 @@
 .header-main-container {
-  width: 100vw;
-  height: 125px;
-
-  background: #FFFFFF;
-
-  flex: none;
-  order: 0;
-  flex-grow: 0;
-
-  border: 1px solid black;
-
+  margin-top: 8px;
+  border-bottom: 1px solid gray;
+  height: 120px; 
 }

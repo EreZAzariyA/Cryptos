@@ -1,0 +1,33 @@
+.highlights-main-container {
+  padding: 0px;
+}
+
+.highlights-main-container .highlights-inner-container .highlights {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  gap: 13px;
+}
+
+.highlights-main-container .highlights .box {
+  /* position: relative; */
+  padding: 0 14px;
+  width: 448px;
+  height: 200px;
+
+  background: #FFFFFF;
+  /* box-shadow: 0px 4px 24px rgba(88, 102, 126, 0.08), 0px 1px 2px rgba(88, 102, 126, 0.12); */
+  border: 1px solid black;
+  border-radius: 8px;
+}
+
+.highlights-main-container .highlights .box .box-head {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.highlights-main-container .highlights .box .box-title {
+  font-size: 14px;
+}

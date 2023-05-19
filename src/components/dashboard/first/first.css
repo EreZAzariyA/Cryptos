@@ -1,0 +1,29 @@
+.dashboard-first-main-container {
+  margin-top: 10px;
+}
+
+.first .text {
+  line-height: 10px;
+}
+
+.first .text .title span {
+  font-size: 25px;
+}
+
+.first .text p.sub-title {
+  font-size: 16px;
+}
+
+.first .highlights {
+  margin-left: -20px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 10px;
+}
+
+@media (max-width: 765px) {
+  .first .text {
+    line-height: 26px;
+  }
+}

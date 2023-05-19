@@ -1,0 +1,14 @@
+.dashboard-main-container {
+  /* border: 1px solid black; */
+  height: calc(99vh - 120px);
+  
+  padding: 0 80px;
+}
+
+.dashboard-main-container .dashboard .highlights {
+  margin-top: 10px;
+}
+
+.dashboard-main-container .dashboard .list {
+  margin-top: 40px;
+}

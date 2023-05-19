@@ -1,13 +1,14 @@
 import { useEffect, useState } from 'react';
 import { Table, Row, Col, Radio } from "antd";
 import { ArrowDownOutlined, ArrowUpOutlined } from '@ant-design/icons';
-import { Charts } from '../charts/charts';
+import { Charts } from '../../charts/charts';
 
 
 export const CoinList = (props) => {
   const { coins } = props;
   const [ dataSource, setDataSource ] = useState([]);
   const [ selectedRange, setSelectedRange ] = useState('day');
+  
 
   useEffect(() => {
     if (coins?.length > 0) {
@@ -21,13 +22,16 @@ export const CoinList = (props) => {
       setDataSource(data);
     }
   }, [coins]);
-
+  
+  const numberWithCommas = (x) => {
+    return x?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  }
   const columns = [
     {
       key: 'num',
-      title: '#',
+      title: 'Rank',
       dataIndex: 'num',
-      width: 50,
+      width: 70,
       fixed: 'left',
       defaultSortOrder: 'ascend',
       sorter: (a, b) => {
@@ -55,6 +59,7 @@ export const CoinList = (props) => {
       },
       fixed: 'left',
       width: 220,
+      minWidth: 200,
       sorter: (a, b) => {
         return a.base.localeCompare(b.base)
       }
@@ -125,7 +130,7 @@ export const CoinList = (props) => {
       dataIndex: 'market_cap',
       render: (_,record) => {
         const value = parseFloat(record.market_cap);
-        return <p>{value} B</p>
+        return <p>${numberWithCommas(value)}</p>
       },
       width: 160
     },
@@ -135,7 +140,7 @@ export const CoinList = (props) => {
       dataIndex: 'volume_24h',
       render: (_,record) => {
         const value = parseFloat(record.market_cap);
-        return <p>{value} B</p>
+        return <p>${numberWithCommas(value)}</p>
       },
       width: 160
     },
@@ -145,18 +150,18 @@ export const CoinList = (props) => {
       dataIndex: 'circulating_supply',
       render: (_,record) => {
         const value = parseFloat(record.market_cap);
-        return <p>{value} {record.base}</p>
+        return <p>{numberWithCommas(value)} {record.base}</p>
       },
-      width: 180
+      width: 190
     },
-    // {
-    //   key: 'last_7_days',
-    //   title: 'Last 7 days',
-    //   render: (record) => {
-    //     return <Paragraph coin={record} />
-    //   },
-    //   width: 200
-    // },
+    {
+      key: 'last_7_days',
+      title: 'Last 7 days',
+      render: (record) => {
+        return <Charts coin={record} selectedRange={selectedRange} />
+      },
+      width: 200
+    },
   ];
 
   const onRangeChange = (e) => {
@@ -167,28 +172,13 @@ export const CoinList = (props) => {
 
   return(
     <Table
-    bordered
-    columns={columns}
-    dataSource={dataSource}
-    loading={!coins || coins?.length === 0}
-    expandable={{ expandedRowRender: (record) => {
-      return (
-        <div style={{margin: 0, padding: '10px', maxHeight: '90%', height: '300px', width: '100%'}} key={record.id}>
-          <Charts coin={record} selectedRange={selectedRange} />
-
-          <Radio.Group onChange={onRangeChange} defaultValue={selectedRange}>
-            <Radio.Button value={'day'}>24h</Radio.Button>
-            <Radio.Button value={'week'}>Last 7 days</Radio.Button>
-            <Radio.Button value={'month'}>Last month</Radio.Button>
-          </Radio.Group>
-
-        </div>
-      );
-    }}}
-    scroll={{
-      x: 1700,
-      y: 600
-    }}
-  />
+      columns={columns}
+      dataSource={dataSource}
+      loading={!coins || coins?.length === 0}
+      scroll={{
+        x: 1700,
+        y: 400
+      }}
+    />
   );
 };
