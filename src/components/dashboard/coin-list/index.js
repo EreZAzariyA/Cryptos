@@ -1,18 +1,21 @@
 import { useEffect, useState } from 'react';
-import { Table, Row, Col, Radio } from "antd";
+import { Table, Row, Col } from "antd";
 import { ArrowDownOutlined, ArrowUpOutlined } from '@ant-design/icons';
 import { Charts } from '../../charts/charts';
+import { useResize, numberWithCommas } from '../../../utils/helpers';
+import { fetchCurrencySymbol } from '../../../redux/actions';
+import { useSelector } from 'react-redux';
 
 
-export const CoinList = (props) => {
-  const { coins } = props;
+export const CoinList = () => {
+  const currency = useSelector((state) => state?.currencyReducer?.currency);
+  const coinsData = useSelector((state) => state?.coinsReducer?.coinsData);
   const [ dataSource, setDataSource ] = useState([]);
-  const [ selectedRange, setSelectedRange ] = useState('day');
-  
+  const { isMobile } = useResize();
 
   useEffect(() => {
-    if (coins?.length > 0) {
-      const data = [...coins].map((coin, index) => {
+    if (coinsData?.[currency]?.length) {
+      const data = [...coinsData?.[currency]].map((coin, index) => {
         return {
           ...coin,
           key: coin.id,
@@ -21,18 +24,15 @@ export const CoinList = (props) => {
       });
       setDataSource(data);
     }
-  }, [coins]);
-  
-  const numberWithCommas = (x) => {
-    return x?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-  }
+  }, [coinsData, currency]);
+
   const columns = [
     {
       key: 'num',
       title: 'Rank',
       dataIndex: 'num',
       width: 70,
-      fixed: 'left',
+      fixed: isMobile ? '' : 'left',
       defaultSortOrder: 'ascend',
       sorter: (a, b) => {
         return a.num - b.num
@@ -57,9 +57,8 @@ export const CoinList = (props) => {
           </Row>
         )
       },
-      fixed: 'left',
+      fixed: isMobile ? '' : 'left',
       width: 220,
-      minWidth: 200,
       sorter: (a, b) => {
         return a.base.localeCompare(b.base)
       }
@@ -74,7 +73,13 @@ export const CoinList = (props) => {
 
         return (
           <div style={{color: textColor}}>
-            <span>${parseFloat(value).toFixed(2)}</span>
+            <span>
+              <span
+                style={{color: textColor}}
+                dangerouslySetInnerHTML={{__html: fetchCurrencySymbol(record.currency)}}
+              />
+              {numberWithCommas(parseFloat(value).toFixed(2))}
+              </span>
             {arrow}
           </div>
         );
@@ -82,7 +87,7 @@ export const CoinList = (props) => {
       sorter: (a, b) => {
         return a.latest - b.latest
       },
-      width: 120,
+      width: 150,
     },
     {
       key: 'last_changes',
@@ -157,24 +162,19 @@ export const CoinList = (props) => {
     {
       key: 'last_7_days',
       title: 'Last 7 days',
+      dataIndex: 'volume_24h',
       render: (record) => {
-        return <Charts coin={record} selectedRange={selectedRange} />
+        return <Charts coin={record} />
       },
       width: 200
     },
   ];
 
-  const onRangeChange = (e) => {
-    const selectedRange = e.target.value;
-    setSelectedRange(selectedRange);
-    // console.log([moment().startOf(selectedRange),moment().endOf(selectedRange)]);
-  };
-
   return(
     <Table
       columns={columns}
       dataSource={dataSource}
-      loading={!coins || coins?.length === 0}
+      loading={!coinsData || coinsData?.length === 0}
       scroll={{
         x: 1700,
         y: 400

@@ -9,13 +9,16 @@
 }
 
 .ant-table .ant-table-thead .ant-table-cell,
-.ant-table .ant-table-thead .ant-table-cell  {
-
+.ant-table .ant-table-thead .ant-table-cell {
   border: 1px solid rgba(0, 0, 0, 0.1);
   padding: 5px;
   text-align: center;
 }
 
+.ant-table .ant-table-tbody .ant-table-cell {
+  text-align: center;
+
+}
 
 /* .main-container .inner-container .ant-table-wrapper {
   height: 100vh;

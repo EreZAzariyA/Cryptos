@@ -3,11 +3,14 @@ import { useEffect, useState } from "react";
 import { ArrowDownOutlined, ArrowUpOutlined } from '@ant-design/icons';
 import "./highlights.css";
 import moment from "moment/moment";
+import { useSelector } from "react-redux";
+import { fetchCurrencySymbol } from "../../../redux/actions";
 
 const box_coins_length = 3;
-export const Highlights = (props) => {
 
-  const { coins } = props;
+export const Highlights = () => {
+  const currency = useSelector((state) => state?.currencyReducer?.currency);
+  const coins = useSelector((state) => state?.coinsReducer?.coinsData?.[currency]);
   const [topCoins, setTopCoins] = useState([]);
   const [recentlyAdded, setRecentlyAdded] = useState([]);
   const [trending, setTrending] = useState([]);
@@ -17,7 +20,7 @@ export const Highlights = (props) => {
       findTopCoins(coins);
       findRecentlyAddedCoins(coins);
     }
-  }, [coins]);
+  }, [coins,currency]);
 
   const findTopCoins = (coins) => {
     const sortedCoins = [...coins].sort((a, b) => b.latest_price.percent_change.day - a.latest_price.percent_change.day);
@@ -42,13 +45,13 @@ export const Highlights = (props) => {
     switch(type){
       case "Top 24h":
         column = {
-          key: 'Top 24h',
-          render: (_,record) => {
+          key: 'Top-24h',
+          render: (val,record) => {
             const textColor = record.latest_price.percent_change.day >= 0 ? 'green' : 'red';
             const arrow = record.latest_price.percent_change.day >= 0 ? <ArrowUpOutlined /> : <ArrowDownOutlined />;
   
             return (
-              <div style={{color: textColor}} key={record.base}>
+              <div style={{color: textColor}} key={record.id}>
                 <span>{parseFloat(record.latest_price.percent_change.day * 100).toFixed(2)}%</span>
                 <span>
                   {arrow}
@@ -63,14 +66,17 @@ export const Highlights = (props) => {
       break;
       case 'Recently added':
         column = {
-          key: 'Recently added',
+          key: 'Recently-added',
           render: (_, record) => {
             const textColor = record.percent_change >= 0 ? 'green' : 'red';
             const arrow = record.percent_change >= 0 ? <ArrowUpOutlined /> : <ArrowDownOutlined />;
             
             return (
               <div style={{color: textColor}}>
-                <span>${parseFloat(record.latest).toFixed(2)}</span>
+                <span>
+                  <span style={{color: textColor}} dangerouslySetInnerHTML={{__html: fetchCurrencySymbol(record.currency)}}/>
+                  {parseFloat(record.latest).toFixed(2)}
+                </span>
                 {arrow}
               </div>
             );
@@ -105,9 +111,9 @@ export const Highlights = (props) => {
       {
         key: 'name',
         dataIndex: 'name',
-        width: '80%'
+        width: 'calc(100% - 80px)'
       },
-      {...column, width: '20%'}
+      {...column, width: '80px'}
     ];
 
     return (
@@ -118,7 +124,7 @@ export const Highlights = (props) => {
         showHeader={false}
         size="small"
         columns={columns}
-        dataSource={coins}
+        dataSource={[...coins].map((c, index)=>({...c, key: index}))}
       />
     );
   };
@@ -139,7 +145,6 @@ export const Highlights = (props) => {
               </div>
 
             </div>
-
             {createTable('Top 24h', topCoins )}
           </div>
 
@@ -152,7 +157,6 @@ export const Highlights = (props) => {
                 <Button type="link">More</Button>
               </div>
             </div>
-
             {createTable('Recently added', recentlyAdded )}
           </div>
 
@@ -165,7 +169,6 @@ export const Highlights = (props) => {
                 <Button type="link">More</Button>
               </div>
             </div>
-
             {createTable('Trending', trending )}
           </div>
 
