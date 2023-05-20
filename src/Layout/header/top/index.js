@@ -25,10 +25,6 @@ export const TopHeader = () => {
     dispatch(setMainCurrency(currency));
   };
 
-  // useEffect(() => {
-  //   console.log(coinsData,currency);
-  // } ,[coinsData,currency]);
-
   return(
     <div className="top-header-main-container">
       <div className="top-header-inner-container">
