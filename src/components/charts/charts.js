@@ -1,39 +1,33 @@
-import moment from 'moment';
-import { useCallback, useEffect, useState } from 'react';
-import useWebSocket, { ReadyState } from "react-use-websocket";
-import { useDispatch, useSelector } from "react-redux"
+// import moment from 'moment';
+import { useState } from 'react';
+// import useWebSocket from "react-use-websocket";
+// import { useDispatch, useSelector } from "react-redux"
 import {
-  LineChart,
-  Line,
   XAxis,
   YAxis,
   CartesianGrid,
   Tooltip,
-  Legend,
-  Brush,
   AreaChart,
   Area,
   ResponsiveContainer,
 } from 'recharts';
-import { numberWithCommas } from '../../utils/helpers';
-import { MainActions } from '../../redux/actions';
 
 
-const weekDays = moment().localeData().weekdays();
-const format = 'HH:mm';
-const URL = 'wss://ws-feed.pro.coinbase.com';
+// const weekDays = moment().localeData().weekdays();
+// const format = 'HH:mm';
+// const URL = 'wss://ws-feed.pro.coinbase.com';
 
 export const Charts = (props) => {
   const { coin, selectedRange } = props;
-  const { readyState, sendJsonMessage, lastJsonMessage } = useWebSocket(URL);
-  const coins = useSelector((state)=>state?.coinsData);
-  const [mapCoins, setMapCoins] = useState([]);
+  // const { readyState, sendJsonMessage, lastJsonMessage } = useWebSocket(URL);
+  // const coins = useSelector((state)=>state?.coinsData);
+  // const [mapCoins, setMapCoins] = useState([]);
 
 
   const [dataHistory, setDataHistory] = useState([]);
-  const [ range, setRange ] = useState({range: [moment().startOf(selectedRange).valueOf(), moment().endOf(selectedRange).valueOf()], granularity: 1440 });
-  const [ labels, setLabels ] = useState({start: null, end: null, labels: []});
-  const dispatch = useDispatch();
+  // const [ range, setRange ] = useState({range: [moment().startOf(selectedRange).valueOf(), moment().endOf(selectedRange).valueOf()], granularity: 1440 });
+  // const [ labels, setLabels ] = useState({start: null, end: null, labels: []});
+  // const dispatch = useDispatch();
 
   // useEffect(() => {
 	// 	if (readyState === ReadyState.OPEN) {
@@ -57,11 +51,11 @@ export const Charts = (props) => {
 
 
 
-  useEffect(() => {
-    if (mapCoins?.length) {
-      console.log(mapCoins);
-    }
-  }, [mapCoins]);
+  // useEffect(() => {
+  //   if (mapCoins?.length) {
+  //     console.log(mapCoins);
+  //   }
+  // }, [mapCoins]);
 
 
   // const CustomToolTip = (props) => {
