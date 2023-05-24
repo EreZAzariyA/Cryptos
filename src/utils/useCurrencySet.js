@@ -13,20 +13,19 @@ export const useCurrencySet = () => {
     if (!coinsData){
       fetchCoinsData().then((cryptos) => {
         dispatch(MainActions.setCoinsData({ 'USD': cryptos }));
-        setCurrencySet(cryptos);
+        setCurrencySet({ 'USD': cryptos });
       });
     }
   }, [coinsData, dispatch]);
 
   useEffect(() => {
     if (coinsData && !coinsData[userCurrency]) {
-      setCurrencySet([]);
       fetchCoinsData(userCurrency).then((cryptos) => {
         dispatch(MainActions.setCoinsData({ ...coinsData, [userCurrency]: cryptos }));
-        setCurrencySet(cryptos);
+        setCurrencySet({...coinsData, [userCurrency]: cryptos});
       });
     } else if (coinsData?.[userCurrency]) {
-      setCurrencySet(coinsData[userCurrency]);
+      setCurrencySet({...coinsData, [userCurrency]: coinsData[userCurrency]});
     };
 
   }, [coinsData, dispatch, userCurrency]);

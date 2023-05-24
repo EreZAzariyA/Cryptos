@@ -9,9 +9,8 @@ export const useLiveData = () => {
 
   useEffect(() => {
     let timer;
-
     if (currencySet && userCurrency) {
-      setLiveData(currencySet);
+      setLiveData(currencySet[userCurrency]);
 
       timer = setInterval(() => {
         fetchCoinsData(userCurrency).then((coins) => {
@@ -22,7 +21,7 @@ export const useLiveData = () => {
     };
     return () => clearInterval(timer);
 
-  }, [currencySet]);
+  }, [currencySet, userCurrency]);
 
 
   return liveData;

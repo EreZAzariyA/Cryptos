@@ -10,16 +10,16 @@ export const CoinList = (props) => {
   const [ dataSource, setDataSource ] = useState([]);
 
   useEffect(() => {
-      if (liveData?.length) {
-        const data = [...liveData].map((coin, index) => {
-          return {
-            ...coin,
-            key: coin.id,
-            num: index + 1
-          }
-        });
-        setDataSource(data);
-      };
+    if (liveData?.length) {
+      const data = [...liveData].map((coin, index) => {
+        return {
+          ...coin,
+          key: coin.id,
+          num: index + 1
+        }
+      });
+      setDataSource(data);
+    };
   }, [liveData]);
 
   const columns = [

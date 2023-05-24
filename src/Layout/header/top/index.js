@@ -8,8 +8,8 @@ export const TopHeader = () => {
   const [count, setCount] = useState(0);
 
   useEffect(() => {
-    if (currencySet) {
-      setCount(currencySet.length);
+    if (currencySet?.['USD']) {
+      setCount(currencySet['USD'].length);
     }
   }, [currencySet]);
 
