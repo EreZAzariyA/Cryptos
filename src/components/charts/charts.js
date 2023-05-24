@@ -80,11 +80,11 @@ export const Charts = (props) => {
           <CartesianGrid type='time' crossOrigin='anonymous' />
           <XAxis dataKey="name" reversed />
           <YAxis domain={['auto', 0]} />
-          <Tooltip
+          {/* <Tooltip
             // content={<CustomToolTip />}
             allowEscapeViewBox={{x: true, y: true}}
             position={{x: -30, y: 40}}
-            contentStyle={{padding: 4}} />
+            contentStyle={{padding: 4}} /> */}
           <Area type={'step'} dataKey="uv" stroke={coin.color} fill={coin.color} />
         </AreaChart>
     </ResponsiveContainer>

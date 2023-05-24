@@ -8,19 +8,20 @@ import { fetchCurrencySymbol } from "../../../redux/actions";
 
 const box_coins_length = 3;
 
-export const Highlights = () => {
+export const Highlights = (props) => {
   const currency = useSelector((state) => state?.currencyReducer?.currency);
-  const coins = useSelector((state) => state?.coinsReducer?.coinsData?.[currency]);
+  // const coins = useSelector((state) => state?.coinsReducer?.coinsData?.[currency]);
+  const { liveData } = props;
   const [topCoins, setTopCoins] = useState([]);
   const [recentlyAdded, setRecentlyAdded] = useState([]);
   const [trending, setTrending] = useState([]);
 
   useEffect(() => {
-    if (coins) {
-      findTopCoins(coins);
-      findRecentlyAddedCoins(coins);
+    if (liveData?.length) {
+      findTopCoins(liveData);
+      findRecentlyAddedCoins(liveData);
     }
-  }, [coins,currency]);
+  }, [liveData, currency]);
 
   const findTopCoins = (coins) => {
     const sortedCoins = [...coins].sort((a, b) => b.latest_price.percent_change.day - a.latest_price.percent_change.day);
@@ -111,14 +112,14 @@ export const Highlights = () => {
       {
         key: 'name',
         dataIndex: 'name',
-        width: 'calc(100% - 80px)'
+        width: '70%'
       },
-      {...column, width: '80px'}
+      {...column, width: '30%'}
     ];
 
     return (
       <Table
-        loading={!coins.length}
+        loading={!liveData.length}
         key={type}
         pagination={false}
         showHeader={false}

@@ -1,43 +1,39 @@
 import { Select } from "antd";
 import { useEffect, useState } from "react";
-import { fetchCountriesCurrencies } from "../../../../redux/actions";
+import { fetchCountriesCurrencies, setMainCurrency } from "../../../../redux/actions";
+import { useDispatch } from "react-redux";
 
 
 export const Options = (props) => {
-  const { selectedCurrency, onCurrencyChange } = props;
   const [ currencies, setCurrencies ] = useState([]);
+  const { userCurrency } = props;
+  const dispatch = useDispatch();
 
   useEffect(() => {
     const currencies = fetchCountriesCurrencies();
     if (currencies) {
-      currencies.sort((a, b)=> (a.abbreviation - b.abbreviation));
+      currencies.sort((a, b)=> (a.code - b.code));
       setCurrencies(currencies);
     };
   }, []);
 
-  const onSelect = (val) => {
-    onCurrencyChange(val);
+  const onSelect = (currency) => {
+    dispatch(setMainCurrency(currency));
   };
 
-
-  // useEffect(()=> {
-  //   console.log(select);
-  // },[select]);
-
-  
   return (
     <div className="options-main-container">
       <div className="options-inner-container">
         <div>
-          <Select defaultValue={selectedCurrency} onSelect={onSelect}>
+          <Select defaultValue={userCurrency} onSelect={onSelect}>
             {currencies?.map((currency) => (
               <Select.Option
-                key={currency.abbreviation}
+                key={currency.code}
                 loading={!currency}
-                value={currency.abbreviation}
+                value={currency.code}
                 title={currency.currency}
               >
-                {currency.abbreviation}
+                {currency.code}
               </Select.Option>
             ))}
           </Select>

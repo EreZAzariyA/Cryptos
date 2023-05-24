@@ -10,7 +10,7 @@ export const ActionsTypes = {
 
 export const fetchCoinsData = async (currency = 'USD') => {
   try {
-    const response = await fetch(`https://coinbase.com/api/v2/assets/search?base=${currency}&filter=listed&include_prices=true&resolution=day&sort=rank&limit=100`);
+    const response = await fetch(`https://coinbase.com/api/v2/assets/search?base=${currency}&filter=listed&include_prices=true&resolution=day&sort=rank`);
     const data = await response.json();
     const coins = data?.data ? data.data.filter((coin)=>(coin.symbol !== 'ETH2')) : [];
     return coins;
@@ -22,8 +22,14 @@ export const fetchCoinsData = async (currency = 'USD') => {
 
 export const MainActions = {
   setCoinsData: createAction(ActionsTypes.SET_COINS_DATA, (coinsData) => ({coinsData})),
-  getCoinsData: createAsyncAction(ActionsTypes.GET_COINS_DATA, () => (fetchCoinsData())),
+  getCoinsData: createAsyncAction(ActionsTypes.GET_COINS_DATA, (currency) => (fetchCoinsData(currency))),
+
 };
+
+export const setMainCurrency = (currency) => ({
+  type: 'CHANGE_CURRENCY_SET',
+  currency: currency,
+})
 
 export const fetchCountriesCurrencies = () => {
   return currencies;
@@ -31,12 +37,7 @@ export const fetchCountriesCurrencies = () => {
 
 export const fetchCurrencySymbol = (currencyCode) => {
   const currency = currencies.find((currency)=>{
-    return currency.abbreviation === currencyCode
+    return currency.code === currencyCode
   });
   return currency.symbol;
 };
-
-export const setMainCurrency = (currency) => ({
-  type: 'CHANGE_CURRENCY_SET',
-  currency: currency,
-})

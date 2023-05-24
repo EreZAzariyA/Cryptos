@@ -1,35 +1,23 @@
-import { useDispatch, useSelector } from "react-redux";
-import { numberWithCommas } from "../../../utils/helpers";
-import "./top.css";
 import { Options } from "./options";
+import { useCurrencySet } from "../../../utils/useCurrencySet";
 import { useEffect, useState } from "react";
-import { MainActions, fetchCoinsData } from "../../../redux/actions";
-import { setMainCurrency } from "../../../redux/actions";
+import "./top.css";
 
 export const TopHeader = () => {
-  const dispatch = useDispatch();
-  const currency = useSelector((state) => state?.currencyReducer?.currency);
-  const coinsData = useSelector((state)=>state?.coinsReducer?.coinsData);
+  const { currencySet, userCurrency } = useCurrencySet();
+  const [count, setCount] = useState(0);
 
   useEffect(() => {
-    if (!coinsData?.[currency]?.length) {
-      fetchCoinsData(currency).then((coins) => {
-        dispatch(MainActions.setCoinsData({...coinsData ,[currency]: coins}));
-      });
-    } else {
-      dispatch(MainActions.setCoinsData({...coinsData}));
+    if (currencySet) {
+      setCount(currencySet.length);
     }
-  }, [currency]);
-
-  const onCurrencyChange = (currency) => {
-    dispatch(setMainCurrency(currency));
-  };
+  }, [currencySet]);
 
   return(
     <div className="top-header-main-container">
       <div className="top-header-inner-container">
         <div className="tickets">
-          <div className="ticket">Cryptos: {numberWithCommas(coinsData?.length)}</div>
+          <div className="ticket">Cryptos: {count}</div>
           <div className="ticket">cryptos: 250</div>
           <div className="ticket">cryptos: 250</div>
           <div className="ticket">cryptos: 250</div>
@@ -37,7 +25,7 @@ export const TopHeader = () => {
         </div>
 
         <div className="options">
-          <Options selectedCurrency={currency} onCurrencyChange={onCurrencyChange} />
+          <Options userCurrency={userCurrency} />
         </div>
 
       </div>

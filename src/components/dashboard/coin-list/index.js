@@ -1,30 +1,26 @@
 import { useEffect, useState } from 'react';
 import { Table, Row, Col } from "antd";
 import { ArrowDownOutlined, ArrowUpOutlined } from '@ant-design/icons';
-import { Charts } from '../../charts/charts';
 import { useResize, numberWithCommas } from '../../../utils/helpers';
 import { fetchCurrencySymbol } from '../../../redux/actions';
-import { useSelector } from 'react-redux';
 
-
-export const CoinList = () => {
-  const currency = useSelector((state) => state?.currencyReducer?.currency);
-  const coinsData = useSelector((state) => state?.coinsReducer?.coinsData);
-  const [ dataSource, setDataSource ] = useState([]);
+export const CoinList = (props) => {
+  const { liveData } = props;
   const { isMobile } = useResize();
+  const [ dataSource, setDataSource ] = useState([]);
 
   useEffect(() => {
-    if (coinsData?.[currency]?.length) {
-      const data = [...coinsData?.[currency]].map((coin, index) => {
-        return {
-          ...coin,
-          key: coin.id,
-          num: index + 1
-        }
-      });
-      setDataSource(data);
-    }
-  }, [coinsData, currency]);
+      if (liveData?.length) {
+        const data = [...liveData].map((coin, index) => {
+          return {
+            ...coin,
+            key: coin.id,
+            num: index + 1
+          }
+        });
+        setDataSource(data);
+      };
+  }, [liveData]);
 
   const columns = [
     {
@@ -159,22 +155,22 @@ export const CoinList = () => {
       },
       width: 190
     },
-    {
-      key: 'last_7_days',
-      title: 'Last 7 days',
-      dataIndex: 'volume_24h',
-      render: (record) => {
-        return <Charts coin={record} />
-      },
-      width: 200
-    },
+    // {
+    //   key: 'last_7_days',
+    //   title: 'Last 7 days',
+    //   dataIndex: 'volume_24h',
+    //   render: (record) => {
+    //     return <Charts coin={record} />
+    //   },
+    //   width: 200
+    // },
   ];
 
   return(
     <Table
       columns={columns}
       dataSource={dataSource}
-      loading={!coinsData || coinsData?.length === 0}
+      loading={!liveData?.length}
       scroll={{
         x: 1700,
         y: 400
