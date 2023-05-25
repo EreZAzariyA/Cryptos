@@ -2,9 +2,9 @@ import { useState } from "react";
 import { DashboardFirst } from "./first";
 import { Highlights } from "./highlights";
 import { useResize } from "../../utils/helpers";
-import { CoinList } from "./coin-list";
-import "./dashboard.css";
+import { CoinList } from "../coin-list";
 import { useLiveData } from "../../utils/useLiveData";
+import "./dashboard.css";
 
 export const Dashboard = () => {
   const liveData = useLiveData();

@@ -119,7 +119,7 @@ export const Highlights = (props) => {
 
     return (
       <Table
-        loading={!liveData.length}
+        loading={!liveData?.length}
         key={type}
         pagination={false}
         showHeader={false}

@@ -1,8 +1,9 @@
 import { useEffect, useState } from 'react';
 import { Table, Row, Col } from "antd";
 import { ArrowDownOutlined, ArrowUpOutlined } from '@ant-design/icons';
-import { useResize, numberWithCommas } from '../../../utils/helpers';
-import { fetchCurrencySymbol } from '../../../redux/actions';
+import { useResize, numberWithCommas } from '../../utils/helpers';
+import { fetchCurrencySymbol } from '../../redux/actions';
+import { Charts } from '../charts/charts';
 
 export const CoinList = (props) => {
   const { liveData } = props;
@@ -99,7 +100,8 @@ export const CoinList = (props) => {
           },
           sorter: (a, b) => (
             a.latest_price.percent_change.hour - b.latest_price.percent_change.hour
-          )
+          ),
+          width: 120
         },
         {
           key: '24h',
@@ -110,7 +112,8 @@ export const CoinList = (props) => {
           },
           sorter: (a, b) => (
             a.latest_price.percent_change.day - b.latest_price.percent_change.day
-          )
+          ),
+          width: 120
         },
         {
           key: '7d',
@@ -121,7 +124,8 @@ export const CoinList = (props) => {
           },
           sorter: (a, b) => (
             a.latest_price.percent_change.week - b.latest_price.percent_change.week
-          )
+          ),
+          width: 120
         },
       ]
     },
@@ -133,7 +137,7 @@ export const CoinList = (props) => {
         const value = parseFloat(record.market_cap);
         return <p>${numberWithCommas(value)}</p>
       },
-      width: 160
+      width: 180
     },
     {
       key: 'volume_24h',
@@ -143,7 +147,7 @@ export const CoinList = (props) => {
         const value = parseFloat(record.market_cap);
         return <p>${numberWithCommas(value)}</p>
       },
-      width: 160
+      width: 180
     },
     {
       key: 'circulating_supply',
@@ -153,17 +157,17 @@ export const CoinList = (props) => {
         const value = parseFloat(record.market_cap);
         return <p>{numberWithCommas(value)} {record.base}</p>
       },
-      width: 190
+      width: 200
     },
-    // {
-    //   key: 'last_7_days',
-    //   title: 'Last 7 days',
-    //   dataIndex: 'volume_24h',
-    //   render: (record) => {
-    //     return <Charts coin={record} />
-    //   },
-    //   width: 200
-    // },
+    {
+      key: 'last_7_days',
+      title: 'Last 7 days',
+      dataIndex: 'volume_24h',
+      render: (_,record) => {
+        return <Charts coin={record} />
+      },
+      width: 200
+    },
   ];
 
   return(
