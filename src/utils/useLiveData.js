@@ -1,28 +1,78 @@
 import { useEffect, useState } from "react";
 import useWebSocket, { ReadyState } from "react-use-websocket";
 import { useCurrencySet } from "./useCurrencySet";
-import { fetchCoinsData } from "../redux/actions";
+import { useDispatch, useSelector } from "react-redux";
+import { MainActions } from "../redux/actions";
 
 export const useLiveData = () => {
   const {currencySet, userCurrency} = useCurrencySet();
-  const [liveData, setLiveData] = useState([]);
+  const [productsIds, setProductsIds] = useState([]);
+  const [liveData, setLiveData] = useState(null);
+  const liveDataSet = useSelector((state) => state?.liveDataReducer?.liveData);
+  const dispatch = useDispatch();
+
+  const { readyState, sendJsonMessage, lastJsonMessage } = useWebSocket(
+		"wss://ws-feed.exchange.coinbase.com"
+	);
 
   useEffect(() => {
-    let timer;
-    if (currencySet && userCurrency) {
+    if (currencySet && userCurrency && currencySet?.[userCurrency]) {
       setLiveData(currencySet[userCurrency]);
+      dispatch(MainActions.setLiveCoinsData(currencySet[userCurrency]));
 
-      timer = setInterval(() => {
-        fetchCoinsData(userCurrency).then((coins) => {
-          setLiveData(coins);
-        })
-      }, 3000);
-    
+      const list = [];
+      Object.values(currencySet).forEach((coins) => {
+        for (const coin of coins) {
+          list.push(`${coin.base}-${coin.currency}`);
+        };
+      });
+      console.log(list);
+      // const mappedCoins = [...currencySet[userCurrency]].map((coin) => (`${coin.base}-${coin.currency}`));
+      setProductsIds(list);
     };
-    return () => clearInterval(timer);
-
   }, [currencySet, userCurrency]);
+  
+	useEffect(() => {
+    if (readyState === ReadyState.OPEN) {
+      sendJsonMessage({
+        type: "subscribe",
+        product_ids: productsIds,
+        channels: ["ticker_batch"],
+      });
+		};
+	}, [readyState, productsIds]);
 
+  useEffect(() => {
+		if (lastJsonMessage) {
+			const { channels, ...payload } = lastJsonMessage;
+			const product = payload.product_id;
+
+      if (product) {
+        if (liveDataSet?.length) {
+          const list = liveDataSet?.map((coin) => {
+            if (`${coin.base}-${coin.currency}` === product) {
+              coin.latest = payload.price;
+              coin.volume_24h = payload.volume_24h
+            }
+            return {...coin}
+          });
+          dispatch(MainActions.setLiveCoinsData(list));
+          setLiveData(list);
+        };
+      }
+
+      if (channels) {
+        if(channels.length) {
+          const [products] = channels?.map(
+            (channel) => channel.product_ids
+          );
+          setProductsIds(products);
+        } else {
+          setProductsIds([]);
+        };
+      }
+		}
+	}, [lastJsonMessage]);
 
   return liveData;
 }

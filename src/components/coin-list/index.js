@@ -1,27 +1,26 @@
-import { useEffect, useState } from 'react';
-import { Table, Row, Col } from "antd";
+import { useEffect, useMemo, useState } from 'react';
+import { Col, Row, Table } from "antd";
+import { numberWithCommas, useResize } from '../../utils/helpers';
+import { useSelector } from 'react-redux';
 import { ArrowDownOutlined, ArrowUpOutlined } from '@ant-design/icons';
-import { useResize, numberWithCommas } from '../../utils/helpers';
 import { fetchCurrencySymbol } from '../../redux/actions';
-import { Charts } from '../charts/charts';
+import { useNavigate, NavLink } from "react-router-dom"
 
 export const CoinList = (props) => {
-  const { liveData } = props;
+  const {liveDataSet} = props;
   const { isMobile } = useResize();
   const [ dataSource, setDataSource ] = useState([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
-    if (liveData?.length) {
-      const data = [...liveData].map((coin, index) => {
-        return {
-          ...coin,
-          key: coin.id,
-          num: index + 1
-        }
-      });
-      setDataSource(data);
+    if (liveDataSet?.length) {
+      liveDataSet.forEach((coin) => {
+        coin.num = liveDataSet.indexOf(coin) + 1;
+        coin.key = coin.id
+      })
+      setDataSource(liveDataSet);
     };
-  }, [liveData]);
+  }, [liveDataSet]);
 
   const columns = [
     {
@@ -31,14 +30,15 @@ export const CoinList = (props) => {
       width: 70,
       fixed: isMobile ? '' : 'left',
       defaultSortOrder: 'ascend',
-      sorter: (a, b) => {
-        return a.num - b.num
-      }
+      shouldCellUpdate: (a, b) => (a.num !== b.num),
+      // sorter: (a, b) => (a.num - b.num),
+      render: (val) => (<p>{val}</p>)
     },
     {
       key: 'base',
       title: 'Coin',
       dataIndex: 'base',
+      shouldCellUpdate: (a, b) => (a.base !== b.base),
       render: (value, record) => {
         return (
           <Row justify={'center'} align={'middle'}>
@@ -46,24 +46,27 @@ export const CoinList = (props) => {
               <img src={record.image_url} className='coin-img' alt="" />
             </Col>
             <Col span={8}>
-             <p>{value}</p>
+             <h4>{value}</h4>
             </Col>
             <Col span={8}>
-              <p>{record.name}</p>
+              <h4>{record.name}</h4>
             </Col>
           </Row>
         )
       },
       fixed: isMobile ? '' : 'left',
       width: 220,
-      sorter: (a, b) => {
-        return a.base.localeCompare(b.base)
-      }
+      // sorter: (a, b) => {
+      //   return a.base.localeCompare(b.base)
+      // }
     },
     {
       key: 'latest',
       title: 'Price',
       dataIndex: 'latest',
+      shouldCellUpdate: (a,b) => {
+        return a.latest !== b.latest
+      },
       render: (value, record) => {
         const textColor = record.percent_change >= 0 ? 'green' : 'red';
         const arrow = record.percent_change >= 0 ? <ArrowUpOutlined /> : <ArrowDownOutlined />;
@@ -81,10 +84,10 @@ export const CoinList = (props) => {
           </div>
         );
       },
-      sorter: (a, b) => {
-        return a.latest - b.latest
-      },
-      width: 150,
+      // sorter: (a, b) => {
+      //   return a.latest - b.latest
+      // },
+    width: 150,
     },
     {
       key: 'last_changes',
@@ -98,9 +101,9 @@ export const CoinList = (props) => {
             // const arrow = record.latest_price.percent_change.hour >= 0 ? <ArrowUpOutlined /> : <ArrowDownOutlined />;
             return <p style={{color: textColor}}>{parseFloat(record.latest_price.percent_change.hour * 100).toFixed(2)}%</p>
           },
-          sorter: (a, b) => (
-            a.latest_price.percent_change.hour - b.latest_price.percent_change.hour
-          ),
+          // sorter: (a, b) => (
+          //   a.latest_price.percent_change.hour - b.latest_price.percent_change.hour
+          // ),
           width: 120
         },
         {
@@ -110,9 +113,9 @@ export const CoinList = (props) => {
             const textColor = record.latest_price.percent_change.day >= 0 ? 'green' : 'red';
             return <p style={{color: textColor}}>{parseFloat(record.latest_price.percent_change.day * 100).toFixed(2)}%</p>
           },
-          sorter: (a, b) => (
-            a.latest_price.percent_change.day - b.latest_price.percent_change.day
-          ),
+          // sorter: (a, b) => (
+          //   a.latest_price.percent_change.day - b.latest_price.percent_change.day
+          // ),
           width: 120
         },
         {
@@ -122,9 +125,9 @@ export const CoinList = (props) => {
             const textColor = record.latest_price.percent_change.week >= 0 ? 'green' : 'red';
             return <p style={{color: textColor}}>{parseFloat(record.latest_price.percent_change.week * 100).toFixed(2)}%</p>
           },
-          sorter: (a, b) => (
-            a.latest_price.percent_change.week - b.latest_price.percent_change.week
-          ),
+          // sorter: (a, b) => (
+          //   a.latest_price.percent_change.week - b.latest_price.percent_change.week
+          // ),
           width: 120
         },
       ]
@@ -159,26 +162,26 @@ export const CoinList = (props) => {
       },
       width: 200
     },
-    {
-      key: 'last_7_days',
-      title: 'Last 7 days',
-      dataIndex: 'volume_24h',
-      render: (_,record) => {
-        return <Charts coin={record} />
-      },
-      width: 200
-    },
+    // {
+    //   key: 'last_7_days',
+    //   title: 'Last 7 days',
+    //   dataIndex: 'volume_24h',
+    //   render: (_,record) => {
+    //     return <Charts coin={record} />
+    //   },
+    //   width: 200
+    // },
   ];
 
   return(
     <Table
       columns={columns}
       dataSource={dataSource}
-      loading={!liveData?.length}
+      loading={!liveDataSet?.length}
       scroll={{
         x: 1700,
         y: 400
       }}
-    />
+   />
   );
 };

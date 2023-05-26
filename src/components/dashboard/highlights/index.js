@@ -9,19 +9,18 @@ import { fetchCurrencySymbol } from "../../../redux/actions";
 const box_coins_length = 3;
 
 export const Highlights = (props) => {
+  const { liveDataSet } = props;
   const currency = useSelector((state) => state?.currencyReducer?.currency);
-  // const coins = useSelector((state) => state?.coinsReducer?.coinsData?.[currency]);
-  const { liveData } = props;
   const [topCoins, setTopCoins] = useState([]);
   const [recentlyAdded, setRecentlyAdded] = useState([]);
   const [trending, setTrending] = useState([]);
 
   useEffect(() => {
-    if (liveData?.length) {
-      findTopCoins(liveData);
-      findRecentlyAddedCoins(liveData);
+    if (liveDataSet?.length) {
+      findTopCoins(liveDataSet);
+      findRecentlyAddedCoins(liveDataSet);
     }
-  }, [liveData, currency]);
+  }, [currency, liveDataSet]);
 
   const findTopCoins = (coins) => {
     const sortedCoins = [...coins].sort((a, b) => b.latest_price.percent_change.day - a.latest_price.percent_change.day);
@@ -119,13 +118,13 @@ export const Highlights = (props) => {
 
     return (
       <Table
-        loading={!liveData?.length}
+        loading={!liveDataSet?.length}
         key={type}
         pagination={false}
         showHeader={false}
         size="small"
         columns={columns}
-        dataSource={[...coins].map((c, index)=>({...c, key: index}))}
+        dataSource={coins}
       />
     );
   };
@@ -178,11 +177,3 @@ export const Highlights = (props) => {
     </div>
   );
 };
-
-
-
-// display: flex;
-// flex-direction: row;
-// align-items: flex-start;
-// padding: 0px;
-// gap: 13px;

@@ -19,6 +19,15 @@ const reducer = createReducer({}, (handleAction) => [
   }),
 ]);
 
+const liveDataReducer = createReducer({}, (handleAction) => [
+  handleAction(MainActions.setLiveCoinsData, (state, { payload }) => {
+    return {
+      ...state,
+      ...payload
+    }
+  })
+]);
+
 const setCurrencySet = (state = {currency: 'USD'}, action) => {
   switch (action.type) {
     case 'CHANGE_CURRENCY_SET':
@@ -32,5 +41,6 @@ const setCurrencySet = (state = {currency: 'USD'}, action) => {
 
 export default combineReducers({
   coinsReducer: reducer,
-  currencyReducer: setCurrencySet
+  currencyReducer: setCurrencySet,
+  liveDataReducer: liveDataReducer
 });

@@ -1,13 +1,13 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { DashboardFirst } from "./first";
 import { Highlights } from "./highlights";
 import { useResize } from "../../utils/helpers";
-import { CoinList } from "../coin-list";
 import { useLiveData } from "../../utils/useLiveData";
 import "./dashboard.css";
+import { CoinList } from "../coin-list";
 
 export const Dashboard = () => {
-  const liveData = useLiveData();
+  const liveDataSet = useLiveData();
   const { isResponsive } = useResize();
   const [ withHighlights, setWithHighlights ] = useState(true);
 
@@ -23,11 +23,11 @@ export const Dashboard = () => {
           
           {withHighlights && !isResponsive &&
             <div className="highlights">
-              <Highlights liveData={liveData} />
+              <Highlights liveDataSet={liveDataSet} />
             </div>
           }
           <div className="list">
-            <CoinList liveData={liveData} />
+            <CoinList liveDataSet={liveDataSet} />
           </div>
           
         </div>
