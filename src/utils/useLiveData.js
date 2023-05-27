@@ -20,15 +20,8 @@ export const useLiveData = () => {
       setLiveData(currencySet[userCurrency]);
       dispatch(MainActions.setLiveCoinsData(currencySet[userCurrency]));
 
-      const list = [];
-      Object.values(currencySet).forEach((coins) => {
-        for (const coin of coins) {
-          list.push(`${coin.base}-${coin.currency}`);
-        };
-      });
-      console.log(list);
-      // const mappedCoins = [...currencySet[userCurrency]].map((coin) => (`${coin.base}-${coin.currency}`));
-      setProductsIds(list);
+      const mappedCoins = [...currencySet[userCurrency]].map((coin) => (`${coin.base}-${coin.currency}`));
+      setProductsIds(mappedCoins);
     };
   }, [currencySet, userCurrency]);
   
@@ -40,6 +33,7 @@ export const useLiveData = () => {
         channels: ["ticker_batch"],
       });
 		};
+
 	}, [readyState, productsIds]);
 
   useEffect(() => {
@@ -48,6 +42,7 @@ export const useLiveData = () => {
 			const product = payload.product_id;
 
       if (product) {
+        console.log(product);
         if (liveDataSet?.length) {
           const list = liveDataSet?.map((coin) => {
             if (`${coin.base}-${coin.currency}` === product) {

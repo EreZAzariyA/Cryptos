@@ -1,12 +1,17 @@
 .dashboard-main-container {
   /* border: 1px solid black; */
   height: calc(99vh - 120px);
-  padding: 0 80px;
+  padding: 10px 60px;
 }
 .dashboard-main-container .dashboard {
-  background: linear-gradient(180deg, #F8FAFD 0%, rgba(248, 250, 253, 0) 50%);
-
+  background: linear-gradient(180deg, rgba(188, 185, 185, 0.4) 0%, rgba(248, 250, 253, 0) 50%);
+  border-radius: 10px;
+  padding: 10px;
 }
+
+
+
+
 
 .dashboard-main-container .dashboard .highlights {
   margin-top: 10px;
@@ -14,4 +19,15 @@
 
 .dashboard-main-container .dashboard .list {
   margin-top: 40px;
+}
+
+@media (max-width: 992px) {
+  .dashboard-main-container {
+    padding: 10px 20px;
+    height: calc(99vh - 120px);
+  }
+
+  .dashboard-main-container .dashboard .list {
+    margin-top: 0;
+  }
 }

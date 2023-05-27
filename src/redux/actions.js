@@ -1,5 +1,6 @@
 import { createAsyncAction, createAction } from 'redux-promise-middleware-actions';
 import currencies from "../utils/currency-symbols.json";
+import { CoinsTypes } from '../utils/helpers';
 
 export const ActionsTypes = {
   GET_COINS_DATA: 'GET_COINS_DATA',
@@ -7,7 +8,7 @@ export const ActionsTypes = {
   SET_LIVE_DATA: 'SET_LIVE_DATA'
 }
 
-export const fetchCoinsData = async (currency = 'USD') => {
+export const fetchCoinsData = async (currency = CoinsTypes.USD) => {
   try {
     const response = await fetch(`https://coinbase.com/api/v2/assets/search?base=${currency}&filter=listed&include_prices=true&resolution=day&sort=rank`);
     const data = await response.json();
@@ -25,7 +26,7 @@ export const MainActions = {
   getCoinsData: createAsyncAction(ActionsTypes.GET_COINS_DATA, (currency) => (fetchCoinsData(currency))),
 };
 
-export const setMainCurrency = (currency) => ({
+export const setMainCurrency = (currency = CoinsTypes.USD) => ({
   type: 'CHANGE_CURRENCY_SET',
   currency: currency,
 });

@@ -1,6 +1,7 @@
 import { createReducer } from 'redux-promise-middleware-actions';
 import { MainActions } from './actions';
 import { combineReducers } from 'redux';
+import { CoinsTypes } from '../utils/helpers';
 
 
 const reducer = createReducer({}, (handleAction) => [
@@ -28,7 +29,7 @@ const liveDataReducer = createReducer({}, (handleAction) => [
   })
 ]);
 
-const setCurrencySet = (state = {currency: 'USD'}, action) => {
+const setCurrencySet = (state = {currency: CoinsTypes.USD}, action) => {
   switch (action.type) {
     case 'CHANGE_CURRENCY_SET':
       state.currency = action.currency;

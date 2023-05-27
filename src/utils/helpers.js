@@ -1,4 +1,10 @@
 import { useState, useEffect } from "react"
+import Icon, { HomeOutlined } from '@ant-design/icons';
+
+
+export const CoinsTypes = {
+  USD: 'USD'
+};
 
 export const validateFieldsAndSpaces = (valueToCheck) => {
   const regexp = /^\S.*\S$/;
@@ -46,4 +52,23 @@ export const useResize = () => {
 
 export const numberWithCommas = (x) => {
   return x?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+};
+
+export const formatHightPrice = (number) => {
+  const units = ["", "K", "M", "B", "T"];
+  const suffix = units[Math.floor(Math.log10(Math.abs(number)) / 3)];
+
+  const abbreviatedNumber = `${(number / Math.pow(10, units.indexOf(suffix) * 3)).toFixed(2)} ${suffix}`;
+
+  return abbreviatedNumber;
+};
+
+
+export const customIcon = (imageSrc, props) => {
+
+  const custom = () => (
+    <img src={imageSrc} alt="" {...props} />
+  );
+
+  return  <Icon component={custom} />;
 }

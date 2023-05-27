@@ -1,5 +1,5 @@
-import { Select } from "antd";
 import { useEffect, useState } from "react";
+import { Select } from "antd";
 import { fetchCountriesCurrencies, setMainCurrency } from "../../../../redux/actions";
 import { useDispatch } from "react-redux";
 
@@ -40,5 +40,5 @@ export const Options = (props) => {
         </div>
       </div>
     </div>
-  )
+  );
 };

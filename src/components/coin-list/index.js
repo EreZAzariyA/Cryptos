@@ -1,16 +1,14 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Col, Row, Table } from "antd";
-import { numberWithCommas, useResize } from '../../utils/helpers';
-import { useSelector } from 'react-redux';
+import { formatHightPrice, numberWithCommas, useResize } from '../../utils/helpers';
 import { ArrowDownOutlined, ArrowUpOutlined } from '@ant-design/icons';
 import { fetchCurrencySymbol } from '../../redux/actions';
-import { useNavigate, NavLink } from "react-router-dom"
+import { NavLink } from 'react-router-dom';
 
 export const CoinList = (props) => {
-  const {liveDataSet} = props;
+  const { liveDataSet } = props;
   const { isMobile } = useResize();
   const [ dataSource, setDataSource ] = useState([]);
-  const navigate = useNavigate();
 
   useEffect(() => {
     if (liveDataSet?.length) {
@@ -30,7 +28,7 @@ export const CoinList = (props) => {
       width: 70,
       fixed: isMobile ? '' : 'left',
       defaultSortOrder: 'ascend',
-      shouldCellUpdate: (a, b) => (a.num !== b.num),
+      // shouldCellUpdate: () => (false),
       // sorter: (a, b) => (a.num - b.num),
       render: (val) => (<p>{val}</p>)
     },
@@ -43,7 +41,9 @@ export const CoinList = (props) => {
         return (
           <Row justify={'center'} align={'middle'}>
             <Col span={8}>
-              <img src={record.image_url} className='coin-img' alt="" />
+              <NavLink to={`/cryptos/${record.base}`}>
+                <img src={record.image_url} className='coin-img' alt="" />
+              </NavLink>
             </Col>
             <Col span={8}>
              <h4>{value}</h4>
@@ -55,7 +55,7 @@ export const CoinList = (props) => {
         )
       },
       fixed: isMobile ? '' : 'left',
-      width: 220,
+      width: isMobile ? 120 : 220,
       // sorter: (a, b) => {
       //   return a.base.localeCompare(b.base)
       // }
@@ -84,10 +84,7 @@ export const CoinList = (props) => {
           </div>
         );
       },
-      // sorter: (a, b) => {
-      //   return a.latest - b.latest
-      // },
-    width: 150,
+      width: 150,
     },
     {
       key: 'last_changes',
@@ -104,7 +101,7 @@ export const CoinList = (props) => {
           // sorter: (a, b) => (
           //   a.latest_price.percent_change.hour - b.latest_price.percent_change.hour
           // ),
-          width: 120
+          width: 80
         },
         {
           key: '24h',
@@ -116,7 +113,7 @@ export const CoinList = (props) => {
           // sorter: (a, b) => (
           //   a.latest_price.percent_change.day - b.latest_price.percent_change.day
           // ),
-          width: 120
+          width: 80
         },
         {
           key: '7d',
@@ -128,7 +125,7 @@ export const CoinList = (props) => {
           // sorter: (a, b) => (
           //   a.latest_price.percent_change.week - b.latest_price.percent_change.week
           // ),
-          width: 120
+          width: 80
         },
       ]
     },
@@ -138,19 +135,19 @@ export const CoinList = (props) => {
       dataIndex: 'market_cap',
       render: (_,record) => {
         const value = parseFloat(record.market_cap);
-        return <p>${numberWithCommas(value)}</p>
+        return <p>${isMobile ? formatHightPrice(value) : numberWithCommas(value)}</p>
       },
-      width: 180
+      width: isMobile ? 60 : 180
     },
     {
       key: 'volume_24h',
       title: 'Volume(24h)',
       dataIndex: 'volume_24h',
-      render: (_,record) => {
-        const value = parseFloat(record.market_cap);
-        return <p>${numberWithCommas(value)}</p>
+      render: (val,record) => {
+        const value = parseFloat(val);
+        return <p>${isMobile ? formatHightPrice(value) : numberWithCommas(value)}</p>
       },
-      width: 180
+      width: isMobile ? 60 : 180
     },
     {
       key: 'circulating_supply',
@@ -158,9 +155,9 @@ export const CoinList = (props) => {
       dataIndex: 'circulating_supply',
       render: (_,record) => {
         const value = parseFloat(record.market_cap);
-        return <p>{numberWithCommas(value)} {record.base}</p>
+        return <p>{isMobile ? formatHightPrice(value) : numberWithCommas(value)} {record.base}</p>
       },
-      width: 200
+      width: isMobile ? 100 : 200
     },
     // {
     //   key: 'last_7_days',
@@ -175,12 +172,13 @@ export const CoinList = (props) => {
 
   return(
     <Table
+      getPopupContainer={'list-table'}
       columns={columns}
       dataSource={dataSource}
       loading={!liveDataSet?.length}
       scroll={{
         x: 1700,
-        y: 400
+        y: 650
       }}
    />
   );

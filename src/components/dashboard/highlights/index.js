@@ -1,12 +1,12 @@
 import { Button, Table } from "antd";
 import { useEffect, useState } from "react";
 import { ArrowDownOutlined, ArrowUpOutlined } from '@ant-design/icons';
-import "./highlights.css";
 import moment from "moment/moment";
 import { useSelector } from "react-redux";
 import { fetchCurrencySymbol } from "../../../redux/actions";
+import "./highlights.css";
 
-const box_coins_length = 3;
+const box_table_coins_length = 3;
 
 export const Highlights = (props) => {
   const { liveDataSet } = props;
@@ -24,14 +24,14 @@ export const Highlights = (props) => {
 
   const findTopCoins = (coins) => {
     const sortedCoins = [...coins].sort((a, b) => b.latest_price.percent_change.day - a.latest_price.percent_change.day);
-    const top =  sortedCoins.slice(0, box_coins_length);
+    const top =  sortedCoins.slice(0, box_table_coins_length);
     setTopCoins(top);
   };
   
   const findRecentlyAddedCoins = (coins) => {
     const format = 'YYYY-MM-DD'
     const sortedCoins = [...coins].sort((a, b) => moment(a.launched_at, format) - moment(b.launched_at, format));
-    const recentlyAdded =  sortedCoins.slice(0, box_coins_length);
+    const recentlyAdded =  sortedCoins.slice(0, box_table_coins_length);
     setRecentlyAdded(recentlyAdded);
   };
 
@@ -118,6 +118,7 @@ export const Highlights = (props) => {
 
     return (
       <Table
+        rootClassName="highlight-table"
         loading={!liveDataSet?.length}
         key={type}
         pagination={false}
@@ -132,9 +133,8 @@ export const Highlights = (props) => {
   return (
     <div className="highlights-main-container">
       <div className="highlights-inner-container">
-
         <div className="highlights">
-
+          {/* Boxes: */}
           <div className="box top">
             <div className="box-head">
               <div className="box-title">
@@ -147,7 +147,6 @@ export const Highlights = (props) => {
             </div>
             {createTable('Top 24h', topCoins )}
           </div>
-
           <div className="box recently">
             <div className="box-head">
               <div className="box-title">
@@ -159,7 +158,6 @@ export const Highlights = (props) => {
             </div>
             {createTable('Recently added', recentlyAdded )}
           </div>
-
           <div className="box trending">
             <div className="box-head">
               <div className="box-title">
@@ -171,7 +169,6 @@ export const Highlights = (props) => {
             </div>
             {createTable('Trending', trending )}
           </div>
-
         </div>
       </div>
     </div>

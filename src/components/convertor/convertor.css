@@ -1,0 +1,20 @@
+.convertor-container {
+  padding: 20px;
+}
+
+.convertor-container .title {
+  font-family: Inter;
+  font-size: 23px;
+  font-weight: 600;
+}
+
+/* .convertor-container .label-box {
+  border: 1px solid black;
+  border-radius: 2px;
+} */
+
+.convertor-container .change-icon {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}

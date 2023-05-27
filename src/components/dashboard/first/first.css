@@ -15,7 +15,7 @@
 }
 
 .first .highlights {
-  margin-left: -20px;
+  /* margin-left: -20px; */
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -23,7 +23,12 @@
 }
 
 @media (max-width: 765px) {
+  .dashboard-first-main-container {
+    margin-top: 0;
+  }
+  
   .first .text {
     line-height: 26px;
   }
+  
 }

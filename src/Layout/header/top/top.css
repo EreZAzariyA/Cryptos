@@ -1,12 +1,14 @@
 .top-header-main-container {
-  height: calc(120px / 3); 
+  height: 40px; 
   border-bottom: 1px solid gray;
   padding: 0 80px;
+  margin-top: 8px;
 }
 
 .top-header-main-container .top-header-inner-container {
   display: flex;
   justify-content: space-between;
+  align-items: center;
 }
 
 .top-header-main-container .tickets {
@@ -16,7 +18,6 @@
 }
 
 .top-header-main-container .options {
-  width: calc(100% - 60%);
   display: flex;
   justify-content: space-around;
 }
@@ -24,5 +25,9 @@
 @media screen and (max-width: 992px) {
   .top-header-main-container .top-header-inner-container {
     max-width: 100vw;
+  }
+  
+  .top-header-main-container .tickets {
+    display: none;
   }
 }

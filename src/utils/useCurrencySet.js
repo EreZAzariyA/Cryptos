@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react"
 import { useDispatch, useSelector } from "react-redux";
 import { MainActions, fetchCoinsData } from "../redux/actions";
+import { CoinsTypes } from "./helpers";
 
 export const useCurrencySet = () => {
   const userCurrency = useSelector((state) => state?.currencyReducer?.currency);
@@ -12,8 +13,8 @@ export const useCurrencySet = () => {
   useEffect(() => {
     if (!coinsData){
       fetchCoinsData().then((cryptos) => {
-        dispatch(MainActions.setCoinsData({ 'USD': cryptos }));
-        setCurrencySet({ 'USD': cryptos });
+        dispatch(MainActions.setCoinsData({ [CoinsTypes.USD]: cryptos }));
+        setCurrencySet({ [CoinsTypes.USD]: cryptos });
       });
     }
   }, [coinsData, dispatch]);

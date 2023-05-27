@@ -1,6 +1,6 @@
 import { Button, Col, Row, Switch } from "antd";
-import "./first.css";
 import { useResize } from "../../../utils/helpers";
+import "./first.css";
 
 export const DashboardFirst = (props) => {
   const {withHighlights, displayHighlights} = props;
@@ -35,4 +35,4 @@ export const DashboardFirst = (props) => {
       </div>
     </div>
   );
-}
+};
