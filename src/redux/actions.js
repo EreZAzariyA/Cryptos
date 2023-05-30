@@ -6,7 +6,7 @@ export const ActionsTypes = {
   GET_COINS_DATA: 'GET_COINS_DATA',
   SET_COINS_DATA: 'SET_COINS_DATA',
   SET_LIVE_DATA: 'SET_LIVE_DATA'
-}
+};
 
 export const fetchCoinsData = async (currency = CoinsTypes.USD) => {
   try {

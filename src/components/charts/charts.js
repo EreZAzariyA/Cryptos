@@ -13,7 +13,7 @@ import {
 } from 'recharts';
 import { useCryptoHistory } from '../../utils/useCryptoHistory';
 import moment from 'moment/moment';
-import { numberWithCommas } from '../../utils/helpers';
+// import { numberWithCommas } from '../../utils/helpers';
 
 
 // const weekDays = moment().localeData().weekdays();
@@ -71,19 +71,19 @@ export const Charts = (props) => {
   // }, [mapCoins]);
 
 
-  const CustomToolTip = (props) => {
-    const { payload } = props;
-    if(!payload) return;
-    const price = payload[0]?.payload.uv;
-    const name = payload[0]?.payload.name;
+  // const CustomToolTip = (props) => {
+  //   const { payload } = props;
+  //   if(!payload) return;
+  //   const price = payload[0]?.payload.uv;
+  //   const name = payload[0]?.payload.name;
 
-    return (
-      <div className="tooltip" style={{background: 'white', border: '1px solid black'}}>
-        <p>{name}</p>
-        <p>${numberWithCommas(price)}</p>
-      </div>
-    )
-  }
+  //   return (
+  //     <div className="tooltip" style={{background: 'white', border: '1px solid black'}}>
+  //       <p>{name}</p>
+  //       <p>${numberWithCommas(price)}</p>
+  //     </div>
+  //   )
+  // }
 
   return(
     <ResponsiveContainer width="100%" height={100} aspect={2}>
@@ -98,7 +98,7 @@ export const Charts = (props) => {
             allowEscapeViewBox={{x: true, y: true}}
             position={{x: -30, y: 40}}
             contentStyle={{padding: 4}} />
-          <Area type={'step'} dataKey="uv" stroke={coin.color} fill={coin.color} />
+          <Area type={'step'} dataKey="uv" stroke={coin?.color} fill={coin?.color} />
         </AreaChart>
     </ResponsiveContainer>
   );

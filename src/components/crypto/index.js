@@ -1,24 +1,29 @@
-import { Link, NavLink, useParams } from "react-router-dom";
-import "./crypto.css";
+import { Link, useParams } from "react-router-dom";
 import { Breadcrumb, Col, Row, Spin } from "antd";
 import { useCurrencySet } from "../../utils/useCurrencySet";
 import { useEffect, useState } from "react";
 import { CurrencyConvertor } from "../convertor";
+import { fetchCountriesCurrencies } from "../../redux/actions";
+import { useLiveData } from "../../utils/useLiveData";
+import "./crypto.css";
+import { Graph } from "./graph";
 
 export const CryptoPage = () => {
   const { coin } = useParams();
   const { currencySet, userCurrency } = useCurrencySet();
   const [ crypto, setCrypto ] = useState(null);
+  const currencies = fetchCountriesCurrencies();
+  const liveDataSet = useLiveData();
+
 
   useEffect(() => {
-    if (currencySet && userCurrency && currencySet?.[userCurrency]) {
-      const cryptoCoin = currencySet[userCurrency]?.find((crypto) => (crypto.base === coin));
+    if (liveDataSet) {
+      const cryptoCoin = liveDataSet.find((crypto) => (crypto.base === coin));
       if (cryptoCoin) {
         setCrypto(cryptoCoin);
       };
     };
-  }, [currencySet, userCurrency, coin]);
-
+  }, [coin, liveDataSet]);
 
   const breadcrumbItems = [
     {
@@ -29,6 +34,7 @@ export const CryptoPage = () => {
       title: `${crypto?.name}`,
     }
   ];
+
 
   if (crypto) {
     return (
@@ -43,7 +49,6 @@ export const CryptoPage = () => {
 
           <Row className="crypto-details mt-10" align={'middle'} justify={"space-between"}>
             <Col sm={{span: 20}} xs={{span: 24}}>
-              
               <Row justify={{xs: 'center', sm: 'start'}}  align={'middle'} gutter={5}>
                 <Col className="crypto-image">
                   <img width={30} src={crypto.image_url} alt={crypto.name}/>
@@ -55,7 +60,6 @@ export const CryptoPage = () => {
                   <h4>{crypto.base}</h4>
                 </Col>
               </Row>
-            
             </Col>
             
             <Col sm={{span: 4}} xs={{span: 24}}>
@@ -65,15 +69,22 @@ export const CryptoPage = () => {
                 <Col>c</Col>
               </Row>
             </Col>
-          
           </Row>
 
-          <Row className="crypto-price mt-5" justify={{xs: 'center'}} align={'top'} gutter={5}>
-            <Col xs={{span: 24}} lg={{span: 16}}>
-              A
+          <Row className="crypto-price mt-5" justify={{xs: 'center'}} align={'top'} gutter={[25, 50]}>
+            
+            <Col className="right-container container" xs={{span: 24}} lg={{span: 16}}>
+              <div className="box">
+                <div className="current-price-container">
+                  <h1>{currencies?.find((c)=>(c.code === userCurrency))?.symbol} {parseFloat(crypto?.latest)?.toFixed(2)}</h1>
+                </div>
+                <div className="charts">
+                  <Graph coin={crypto} />
+                </div>
+              </div>
             </Col>
             
-            <Col className="left-container" xs={{span: 24}} lg={{span: 8}}>
+            <Col className="left-container container" xs={{span: 24}} lg={{span: 8}}>
               <div className="box">
                 <div className="convertor">
                   <CurrencyConvertor crypto={crypto} />

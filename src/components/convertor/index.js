@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Col, Input, Row, Select, Spin, Tooltip } from "antd";
+import { Col, Input, Row, Select, Space, Spin, Tooltip } from "antd";
 import { InfoCircleOutlined } from '@ant-design/icons';
 import "./convertor.css";
 import { customIcon } from "../../utils/helpers";
@@ -12,11 +12,15 @@ export const CurrencyConvertor = ({crypto}) => {
   const { currencySet, userCurrency } = useCurrencySet();
   const [currencyToExchange, setCurrencyToExchange] = useState(userCurrency);
   const [valueToExchange, setValueToExchange] = useState(1);
+  const [returnedValue, setReturnedValue] = useState(parseFloat(valueToExchange * crypto?.latest)?.toFixed(2))
   const [currencyPrefixSelectOpen, setCurrencyPrefixSelectOpen] = useState(false);
+  const countries = fetchCountriesCurrencies();
 
   useEffect(() => {
-    setCurrencyToExchange(userCurrency);
-  }, [userCurrency]);
+    console.log(currencyToExchange);
+  }, [currencyToExchange]);
+
+  
   
   const iconProps = {
     width: '20px',
@@ -32,39 +36,10 @@ export const CurrencyConvertor = ({crypto}) => {
     );
   };
 
-  const currencyPrefix = () => {
-
-    const countries = fetchCountriesCurrencies();
-    
-    const onChange = (val) => {
-      setCurrencyPrefixSelectOpen(false);
-      setCurrencyToExchange(val);
-    }
-
-    return (
-      <>
-        <Select
-          showSearch
-          style={{
-            width: 80,
-          }}
-          open={currencyPrefixSelectOpen}
-          // onClick={()=>setCurrencyPrefixSelectOpen(true)}
-          // onSelect={(val) => setCurrencyPrefixSelectOpen(false) }
-          onDropdownVisibleChange={(val) => {setCurrencyPrefixSelectOpen(val); console.log(val);}}
-          // onMouseLeave={() => setCurrencyPrefixSelectOpen(false)}
-          // defaultValue={currencyToExchange}
-          placeholder="Search for coin"
-          onChange={(val) => onChange(val)}
-          options={[...countries]?.map((country) => ({
-            value: country.code,
-            label: country.code
-          }))}
-        />
-        <div style={{fontWeight: '700'}}>{currencyToExchange}</div>
-      </>
-    );
-  };
+  useEffect(() => {
+    const value = parseFloat(valueToExchange * crypto?.latest)?.toFixed(2);
+    setReturnedValue(value);
+  }, [valueToExchange, crypto]);
   
   return (
     <div className="convertor-container">
@@ -85,19 +60,72 @@ export const CurrencyConvertor = ({crypto}) => {
 
         </Col>
         <Col span={24} className="change-icon">
-          <Spin />
+          <p>Switch BTN</p>
         </Col>
         <Col span={24} className="label-box">
-          <Input
-            dir="RTL"
-            // value={valueToExchange}
-            // onChange={(val) => setValueToExchange(val)}
-            type="number"
-            prefix={currencyPrefix()}
-          />
+          <Space.Compact style={{width: '100%'}}>
+            <Select
+              style={{ width: '20%' }}
+              value={currencyToExchange}
+              onChange={(val) => setCurrencyToExchange(val)}
+            >
+              {countries.map((country) => (
+                <Select.Option key={country.code} value={country.code}>
+                  {country.code}
+                </Select.Option>
+              ))}
+            </Select>
+            
+            <Input
+              disabled
+              type="number"
+              dir="RTL"
+              style={{ width: '80%' }}
+              value={returnedValue}
+              // onChange={(e) => setValueToExchange(e.target.value)}
+              prefix={countries?.find((c)=>(c.code === currencyToExchange))?.symbol}
+            />
+          </Space.Compact>
         </Col>
 
       </Row>
     </div>
   );
 };
+
+
+
+
+
+
+// const currencyPrefix = () => {
+
+//   const countries = fetchCountriesCurrencies();
+  
+//   const onChange = (val) => {
+//     setCurrencyPrefixSelectOpen(false);
+//     setCurrencyToExchange(val);
+//   }
+
+//   return (
+//     <>
+//       <Select
+//         showSearch
+//         style={{
+//           width: 80,
+//         }}
+//         open={currencyPrefixSelectOpen}
+//         onClick={()=>setCurrencyPrefixSelectOpen(!currencyPrefixSelectOpen)}
+//         onSelect={(val) => setCurrencyPrefixSelectOpen(false) }
+//         defaultValue={currencyToExchange}
+//         placeholder="Search for coin"
+//         onChange={(val) => onChange(val)}
+//         options={[...countries]?.map((country) => ({
+//           value: country.code,
+//           label: country.code
+//         }))}
+//       />
+//       <div style={{fontWeight: '700'}}>{currencyToExchange}</div>
+//     </>
+//   );
+// };

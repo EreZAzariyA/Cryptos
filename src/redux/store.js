@@ -1,7 +1,13 @@
-import { legacy_createStore as createStore} from 'redux'
+import { configureStore } from '@reduxjs/toolkit'
 import mainReducer from './reducer'
+import { Socket } from '../utils/websocket-utils';
+import { socketMiddleware } from './middleware';
+// import { applyMiddleware, legacy_createStore as createStore} from 'redux'
 
 
-const store = createStore(mainReducer, window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__());
+const store = configureStore({
+  reducer: mainReducer,
+  middleware: [socketMiddleware(new Socket())],
+});
 
 export default store;

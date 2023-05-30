@@ -9,18 +9,18 @@ import "./highlights.css";
 const box_table_coins_length = 3;
 
 export const Highlights = (props) => {
-  const { liveDataSet } = props;
+  const { coinsData } = props;
   const currency = useSelector((state) => state?.currencyReducer?.currency);
   const [topCoins, setTopCoins] = useState([]);
   const [recentlyAdded, setRecentlyAdded] = useState([]);
   const [trending, setTrending] = useState([]);
 
   useEffect(() => {
-    if (liveDataSet?.length) {
-      findTopCoins(liveDataSet);
-      findRecentlyAddedCoins(liveDataSet);
+    if (coinsData?.[currency]?.length) {
+      findTopCoins(coinsData[currency]);
+      findRecentlyAddedCoins(coinsData[currency]);
     }
-  }, [currency, liveDataSet]);
+  }, [currency, coinsData]);
 
   const findTopCoins = (coins) => {
     const sortedCoins = [...coins].sort((a, b) => b.latest_price.percent_change.day - a.latest_price.percent_change.day);
@@ -119,7 +119,7 @@ export const Highlights = (props) => {
     return (
       <Table
         rootClassName="highlight-table"
-        loading={!liveDataSet?.length}
+        loading={!coinsData?.[currency]?.length}
         key={type}
         pagination={false}
         showHeader={false}

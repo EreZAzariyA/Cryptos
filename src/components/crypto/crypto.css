@@ -2,6 +2,10 @@
   padding: 10px 60px;
 }
 
+.crypto-main-container .crypto-inner-container {
+
+}
+
 .crypto-main-container .crypto-details .crypto-image img {
   margin-top: 5px;
 }
@@ -14,22 +18,39 @@
 
 .crypto-main-container .crypto-details .crypto-base h4 {
   margin-top: 25px;
-  
   font-family: Inter;
   font-size: 16px;
   font-weight: 600;
 }
 
-.crypto-main-container .crypto-price .left-container .box {
-  height: 100vh;
-  width: 100%;
-  background-color: aliceblue;
+.crypto-main-container .crypto-price .container {
+  height: 70vh;
+}
 
+.crypto-main-container .crypto-price .container .box {
+  height: 100%;
+  
   display: flex;
   flex-direction: column;
   align-items: flex-start;
 }
 
+.crypto-main-container .crypto-price .right-container.container .box {
+  background-color: rgba(0, 255, 255, 0.300);
+}
+
+.crypto-main-container .crypto-price .left-container.container .box {
+  background-color: aliceblue;
+}
+
+
+
+
+.crypto-main-container .crypto-price .right-container .current-price-container {
+  height: 70px;
+  width: 80%;
+  padding: 24px;
+}
 
 
 @media (max-width: 992px) {

@@ -42,7 +42,6 @@ export const useLiveData = () => {
 			const product = payload.product_id;
 
       if (product) {
-        console.log(product);
         if (liveDataSet?.length) {
           const list = liveDataSet?.map((coin) => {
             if (`${coin.base}-${coin.currency}` === product) {

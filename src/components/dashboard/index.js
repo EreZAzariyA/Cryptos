@@ -1,15 +1,27 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { DashboardFirst } from "./first";
 import { Highlights } from "./highlights";
 import { useResize } from "../../utils/helpers";
 import { useLiveData } from "../../utils/useLiveData";
 import { CoinList } from "../coin-list";
 import { Navbar } from "../navbar";
+import { useDispatch } from 'react-redux'
 
 import "./dashboard.css";
 
 export const Dashboard = () => {
-  const liveDataSet = useLiveData();
+
+  const dispatch = useDispatch()
+  
+  useEffect(() => {
+    dispatch({ type: 'socket/connect' });
+
+    return () => {
+      dispatch({ type:'socket/disconnect'});
+    }
+  }, []);
+  
+  const liveDataSet = [];
   const { isResponsive } = useResize();
   const [ withHighlights, setWithHighlights ] = useState(true);
 

@@ -1,7 +1,5 @@
-import { Options } from "./options";
 import { useCurrencySet } from "../../../utils/useCurrencySet";
 import { useEffect, useState } from "react";
-import { CoinsTypes } from "../../../utils/helpers";
 import "./top.css";
 import { Button } from "antd";
 import { Link } from "react-router-dom";
@@ -11,10 +9,10 @@ export const TopHeader = () => {
   const [count, setCount] = useState(0);
 
   useEffect(() => {
-    if (currencySet?.[CoinsTypes.USD]) {
-      setCount(currencySet[CoinsTypes.USD].length);
-    }
-  }, [currencySet]);
+    if (currencySet && userCurrency && currencySet?.[userCurrency]) {
+      setCount(currencySet[userCurrency].length);
+    };
+  }, [currencySet, userCurrency]);
 
   return(
     <div className="top-header-main-container">
@@ -36,7 +34,7 @@ export const TopHeader = () => {
         </div>
 
         <div className="options">
-          <Options userCurrency={userCurrency} />
+          {/* <Options userCurrency={userCurrency} /> */}
         </div>
 
       </div>
