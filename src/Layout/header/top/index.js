@@ -3,16 +3,31 @@ import { useEffect, useState } from "react";
 import "./top.css";
 import { Button } from "antd";
 import { Link } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { MainActions, SocketActions, fetchCoinsData } from "../../../redux/actions";
+import { Options } from "./options";
+import { CoinsTypes } from "../../../utils/helpers";
 
 export const TopHeader = () => {
-  const { currencySet, userCurrency } = useCurrencySet();
+  const currency = useSelector((state) => state?.currencyReducer?.currency);
   const [count, setCount] = useState(0);
-
+  const dispatch = useDispatch()
+  
   useEffect(() => {
-    if (currencySet && userCurrency && currencySet?.[userCurrency]) {
-      setCount(currencySet[userCurrency].length);
-    };
-  }, [currencySet, userCurrency]);
+    // fetchCoinsData().then((coins) => {
+    //   dispatch(MainActions.setCoinsData({[CoinsTypes.USD]: coins}));
+    // });
+    dispatch(MainActions.getCoinsData().payload.then((coins) => {
+      dispatch(MainActions.setCoinsData({USD: coins}));
+      // console.log(coins);
+    }));
+    dispatch(SocketActions.connect());
+    // if (currencySet && userCurrency && currencySet?.[userCurrency]){
+    //   dispatch(SocketActions.getLiveData({[userCurrency]: currencySet[userCurrency]}));
+    //   setCount(currencySet[userCurrency].length);
+    // };
+
+  }, [dispatch]);
 
   return(
     <div className="top-header-main-container">

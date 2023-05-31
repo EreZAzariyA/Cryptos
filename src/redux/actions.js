@@ -8,6 +8,13 @@ export const ActionsTypes = {
   SET_LIVE_DATA: 'SET_LIVE_DATA'
 };
 
+export const SocketActionsTypes = {
+  CONNECT: 'WEBSOCKET:CONNECT',
+  GET_DATA: 'WEBSOCKET:GET_DATA',
+  SET_DATA: 'WEBSOCKET:SET_DATA',
+  DISCONNECT: 'WEBSOCKET:DISCONNECT'
+};
+
 export const fetchCoinsData = async (currency = CoinsTypes.USD) => {
   try {
     const response = await fetch(`https://coinbase.com/api/v2/assets/search?base=${currency}&filter=listed&include_prices=true&resolution=day&sort=rank`);
@@ -24,6 +31,13 @@ export const MainActions = {
   setCoinsData: createAction(ActionsTypes.SET_COINS_DATA, (coinsData) => ({coinsData})),
   setLiveCoinsData: createAction(ActionsTypes.SET_LIVE_DATA, (liveData) => ({liveData})),
   getCoinsData: createAsyncAction(ActionsTypes.GET_COINS_DATA, (currency) => (fetchCoinsData(currency))),
+};
+
+export const SocketActions = {
+  connect: createAction(SocketActionsTypes.CONNECT, (dataToFetch) => (dataToFetch)),
+  getLiveData: createAction(SocketActionsTypes.GET_DATA, (dataToFetch) => ({dataToFetch})),
+  setLiveData: createAction(SocketActionsTypes.SET_DATA, (data) => ({data})),
+  disconnect: createAction(SocketActionsTypes.DISCONNECT),
 };
 
 export const setMainCurrency = (currency = CoinsTypes.USD) => ({

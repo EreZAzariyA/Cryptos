@@ -20,15 +20,19 @@ export const useCurrencySet = () => {
   }, [coinsData, dispatch]);
 
   useEffect(() => {
-    if (coinsData && !coinsData[userCurrency]) {
+    if (coinsData) {
+      if (coinsData?.[userCurrency]){
+        setCurrencySet({...coinsData, [userCurrency]: coinsData[userCurrency]});
+      }
+    } else {
       fetchCoinsData(userCurrency).then((cryptos) => {
         dispatch(MainActions.setCoinsData({ ...coinsData, [userCurrency]: cryptos }));
-        setCurrencySet({...coinsData, [userCurrency]: cryptos});
+        setCurrencySet((currencySet)=>({
+          ...currencySet,
+          [userCurrency]: cryptos
+        }));
       });
-    } else if (coinsData?.[userCurrency]) {
-      setCurrencySet({...coinsData, [userCurrency]: coinsData[userCurrency]});
-    };
-
+    }
   }, [coinsData, dispatch, userCurrency]);
 
   return {currencySet, userCurrency};

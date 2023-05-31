@@ -3,7 +3,6 @@ import { Header } from "./header";
 import "./layout.css";
 
 export const Layout = () => {
-
   return(
     <div className="layout">
       <Header />
