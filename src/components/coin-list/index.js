@@ -1,10 +1,11 @@
 import { useEffect, useState } from 'react';
-import { Col, Row, Table } from "antd";
-import { formatHightPrice, numberWithCommas, useResize } from '../../utils/helpers';
-import { ArrowDownOutlined, ArrowUpOutlined } from '@ant-design/icons';
-import { fetchCurrencySymbol } from '../../redux/actions';
 import { NavLink } from 'react-router-dom';
 import { useSelector } from 'react-redux';
+import { fetchCurrencySymbol } from '../../redux/actions';
+import { formatHightPrice, numberWithCommas, useResize } from '../../utils/helpers';
+import { Col, Row, Table } from "antd";
+import { ArrowDownOutlined, ArrowUpOutlined } from '@ant-design/icons';
+import { Charts } from '../charts/charts';
 
 export const CoinList = (props) => {
   const { coinsData } = props;
@@ -161,15 +162,15 @@ export const CoinList = (props) => {
       },
       width: isMobile ? 100 : 200
     },
-    // {
-    //   key: 'last_7_days',
-    //   title: 'Last 7 days',
-    //   dataIndex: 'volume_24h',
-    //   render: (_,record) => {
-    //     return <Charts coin={record} />
-    //   },
-    //   width: 200
-    // },
+    {
+      key: 'last_7_days',
+      title: 'Last 7 days',
+      dataIndex: 'volume_24h',
+      render: (_,record) => {
+        return <Charts coin={record} />
+      },
+      width: 200
+    },
   ];
 
   return(

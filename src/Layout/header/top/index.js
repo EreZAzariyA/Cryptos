@@ -1,19 +1,18 @@
 import { useEffect, useState } from "react";
-import { Button } from "antd";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
+import { Options } from "./options";
 import { MainActions, fetchCoinsData } from "../../../redux/actions";
+import { Button } from "antd";
 import { CoinsTypes } from "../../../utils/helpers";
 import "./top.css";
-import { Options } from "./options";
 
 export const TopHeader = () => {
   const coinsData = useSelector((state) => state?.coinsReducer?.coinsData);
   const currency = useSelector((state) => state?.currencyReducer?.currency);
   const [count, setCount] = useState(0);
-  const dispatch = useDispatch()
-  // dispatch(SocketActions.connect());
-  
+  const dispatch = useDispatch();
+
   useEffect(() => {
     if (!coinsData) {
       fetchCoinsData().then((coins) => {
@@ -21,9 +20,6 @@ export const TopHeader = () => {
         dispatch(MainActions.setCoinsData({[CoinsTypes.USD]: coins}));
       });
     };
-  }, [coinsData, dispatch]);
-
-  useEffect(() => {
     if (coinsData && !coinsData?.[currency]) {
       fetchCoinsData(currency).then((coins) => {
         setCount(coins.length);
@@ -32,28 +28,7 @@ export const TopHeader = () => {
     };
   }, [coinsData, currency, dispatch]);
 
-  useEffect(() => {
-    let timer;
-    if (coinsData) {
-
-      timer = setInterval(async () => {
-        const currencies = Object.keys(coinsData);
-        
-        const newList = await Promise.all(currencies.map(async (currencySet) => {
-          const coins = await fetchCoinsData();
-          return {
-            [currencySet]: coins
-          };
-        }));
-    
-        dispatch(MainActions.setCoinsData(...newList));
-      }, 1000 * 2);
-    }
-
-    return () => clearInterval(timer);
-  }, [coinsData, currency]);
-
-  return(
+  return (
     <div className="top-header-main-container">
       <div className="top-header-inner-container">
         <div className="logo">

@@ -5,14 +5,6 @@ import { CoinsTypes } from '../utils/helpers';
 export const ActionsTypes = {
   GET_COINS_DATA: 'GET_COINS_DATA',
   SET_COINS_DATA: 'SET_COINS_DATA',
-  SET_LIVE_DATA: 'SET_LIVE_DATA'
-};
-
-export const SocketActionsTypes = {
-  CONNECT: 'WEBSOCKET:CONNECT',
-  GET_DATA: 'WEBSOCKET:GET_DATA',
-  SET_DATA: 'WEBSOCKET:SET_DATA',
-  DISCONNECT: 'WEBSOCKET:DISCONNECT'
 };
 
 export const fetchCoinsData = async (currency = CoinsTypes.USD) => {
@@ -29,15 +21,7 @@ export const fetchCoinsData = async (currency = CoinsTypes.USD) => {
 
 export const MainActions = {
   setCoinsData: createAction(ActionsTypes.SET_COINS_DATA, (coinsData) => ({coinsData})),
-  setLiveCoinsData: createAction(ActionsTypes.SET_LIVE_DATA, (liveData) => ({liveData})),
   getCoinsData: createAsyncAction(ActionsTypes.GET_COINS_DATA, (currency) => (fetchCoinsData(currency))),
-};
-
-export const SocketActions = {
-  connect: createAction(SocketActionsTypes.CONNECT, (dataToFetch) => (dataToFetch)),
-  getLiveData: createAction(SocketActionsTypes.GET_DATA, (dataToFetch) => ({dataToFetch})),
-  setLiveData: createAction(SocketActionsTypes.SET_DATA, (data) => ({data})),
-  disconnect: createAction(SocketActionsTypes.DISCONNECT),
 };
 
 export const setMainCurrency = (currency = CoinsTypes.USD) => ({

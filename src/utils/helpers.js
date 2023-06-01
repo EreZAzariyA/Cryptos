@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react"
-import Icon, { HomeOutlined } from '@ant-design/icons';
+import Icon from '@ant-design/icons';
 
 
 export const CoinsTypes = {
@@ -9,7 +9,7 @@ export const CoinsTypes = {
 export const validateFieldsAndSpaces = (valueToCheck) => {
   const regexp = /^\S.*\S$/;
 
-  for (const [key, value] of Object.entries(valueToCheck)) {
+  for (const value of Object.values(valueToCheck)) {
     if(!value){
       throw new Error(`Some fields are missing`);
     }

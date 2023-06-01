@@ -1,6 +1,6 @@
 import { Link, useParams } from "react-router-dom";
 import { Breadcrumb, Col, Row, Spin } from "antd";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { CurrencyConvertor } from "../convertor";
 import { fetchCountriesCurrencies } from "../../redux/actions";
 import "./crypto.css";
@@ -11,20 +11,8 @@ export const CryptoPage = () => {
   const { coin } = useParams();
   const [ crypto, setCrypto ] = useState(null);
   const currencies = fetchCountriesCurrencies();
-  // const liveDataSet = []
   const coinsData = useSelector((state) => console.log(state))
   const userCurrency = useSelector((state) => state?.currencyReducer?.currency);
-
-
-
-  // useEffect(() => {
-  //   if (liveDataSet) {
-  //     const cryptoCoin = liveDataSet.find((crypto) => (crypto.base === coin));
-  //     if (cryptoCoin) {
-  //       setCrypto(cryptoCoin);
-  //     };
-  //   };
-  // }, [coin, liveDataSet]);
 
   const breadcrumbItems = [
     {

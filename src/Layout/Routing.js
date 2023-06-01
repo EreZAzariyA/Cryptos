@@ -9,4 +9,4 @@ export const Routing = () => (
 
     <Route path="*" element={<p>Page not found</p>}/>
   </Routes>
-)
+);

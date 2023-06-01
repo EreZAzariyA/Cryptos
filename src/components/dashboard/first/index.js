@@ -1,5 +1,5 @@
-import { Button, Col, Row, Switch } from "antd";
 import { useResize } from "../../../utils/helpers";
+import { Button, Col, Row, Switch } from "antd";
 import "./first.css";
 
 export const DashboardFirst = (props) => {

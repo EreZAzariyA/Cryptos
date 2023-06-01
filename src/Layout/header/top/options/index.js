@@ -1,12 +1,12 @@
 import { useEffect, useState } from "react";
-import { Select } from "antd";
-import { fetchCountriesCurrencies, setMainCurrency } from "../../../../redux/actions";
 import { useDispatch } from "react-redux";
+import { fetchCountriesCurrencies, setMainCurrency } from "../../../../redux/actions";
+import { Select } from "antd";
 
 
 export const Options = (props) => {
-  const [ currencies, setCurrencies ] = useState([]);
   const { userCurrency } = props;
+  const [ currencies, setCurrencies ] = useState([]);
   const dispatch = useDispatch();
 
   useEffect(() => {

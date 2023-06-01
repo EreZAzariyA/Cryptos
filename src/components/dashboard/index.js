@@ -1,10 +1,10 @@
 import { useState } from "react";
+import { useSelector } from "react-redux";
 import { DashboardFirst } from "./first";
 import { Highlights } from "./highlights";
 import { useResize } from "../../utils/helpers";
 import { CoinList } from "../coin-list";
 import "./dashboard.css";
-import { useSelector } from "react-redux";
 
 export const Dashboard = () => {
   const coinsData = useSelector((state) => state?.coinsReducer?.coinsData);

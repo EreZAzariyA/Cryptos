@@ -1,9 +1,9 @@
-import { Button, Table } from "antd";
 import { useEffect, useState } from "react";
-import { ArrowDownOutlined, ArrowUpOutlined } from '@ant-design/icons';
-import moment from "moment/moment";
 import { useSelector } from "react-redux";
+import moment from "moment/moment";
 import { fetchCurrencySymbol } from "../../../redux/actions";
+import { Button, Table } from "antd";
+import { ArrowDownOutlined, ArrowUpOutlined } from '@ant-design/icons';
 import "./highlights.css";
 
 const box_table_coins_length = 3;
@@ -13,7 +13,8 @@ export const Highlights = (props) => {
   const currency = useSelector((state) => state?.currencyReducer?.currency);
   const [topCoins, setTopCoins] = useState([]);
   const [recentlyAdded, setRecentlyAdded] = useState([]);
-  const [trending, setTrending] = useState([]);
+  // const [trending, setTrending] = useState([]);
+  const trending = [];
 
   useEffect(() => {
     if (coinsData && coinsData?.[currency]) {
@@ -38,14 +39,10 @@ export const Highlights = (props) => {
     const recentlyAdded =  sortedCoins.slice(0, box_table_coins_length);
     setRecentlyAdded(recentlyAdded);
   };
-
-  const findMostTrendingCoins = (coins) => {
-
-  };
+  // const findMostTrendingCoins = (coins) => {};
 
   const createTable = (type, coins) => {
     let column;
-    // eslint-disable-next-line default-case
     switch(type){
       case "Top 24h":
         column = {
@@ -53,7 +50,6 @@ export const Highlights = (props) => {
           render: (val,record) => {
             const textColor = record.latest_price.percent_change.day >= 0 ? 'green' : 'red';
             const arrow = record.latest_price.percent_change.day >= 0 ? <ArrowUpOutlined /> : <ArrowDownOutlined />;
-  
             return (
               <div style={{color: textColor}} key={record.id}>
                 <span>{parseFloat(record.latest_price.percent_change.day * 100).toFixed(2)}%</span>
@@ -74,7 +70,6 @@ export const Highlights = (props) => {
           render: (_, record) => {
             const textColor = record.percent_change >= 0 ? 'green' : 'red';
             const arrow = record.percent_change >= 0 ? <ArrowUpOutlined /> : <ArrowDownOutlined />;
-            
             return (
               <div style={{color: textColor}}>
                 <span>
@@ -96,7 +91,6 @@ export const Highlights = (props) => {
           render: (_, record) => {
             const textColor = record.percent_change >= 0 ? 'green' : 'red';
             const arrow = record.percent_change >= 0 ? <ArrowUpOutlined /> : <ArrowDownOutlined />;
-            
             return (
               <div style={{color: textColor}}>
                 <span>${parseFloat(record.latest).toFixed(2)}</span>
@@ -109,7 +103,9 @@ export const Highlights = (props) => {
           }
         };
       break;
-    }
+      default:
+        return;
+    };
 
     const columns = [
       {
