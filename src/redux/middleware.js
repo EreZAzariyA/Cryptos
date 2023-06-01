@@ -7,7 +7,7 @@ export const socketMiddleware = (socket) => (store) => (next) => (action) => {
   const mainCurrency = getState()?.currencyReducer?.currency;
   const state = getState()
 
-  console.log(state);
+  // console.log(state);
 
   switch (type) {
     case SocketActionsTypes.CONNECT:
