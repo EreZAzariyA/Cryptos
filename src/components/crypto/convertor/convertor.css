@@ -3,16 +3,22 @@
   background-color: beige;
 }
 
+.convertor-container .coin-prefix,
+.convertor-container .currency-select-prefix {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+.convertor-container .coin-prefix .base,
+.convertor-container .currency-select-prefix .base {
+  margin: 0 10px;
+}
+
 .convertor-container .title {
   font-family: Inter;
   font-size: 23px;
   font-weight: 600;
 }
-
-/* .convertor-container .label-box {
-  border: 1px solid black;
-  border-radius: 2px;
-} */
 
 .convertor-container .change-icon {
   display: flex;

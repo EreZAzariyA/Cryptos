@@ -43,6 +43,10 @@
   background-color: aliceblue;
 }
 
+.crypto-main-container .crypto-price .left-container.container .box div:not(:nth-child(1)){
+  margin-top: 10px;
+}
+
 
 
 

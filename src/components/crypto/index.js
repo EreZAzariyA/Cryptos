@@ -1,18 +1,28 @@
+import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
-import { Breadcrumb, Col, Row, Spin } from "antd";
-import { useState } from "react";
-import { CurrencyConvertor } from "../convertor";
-import { fetchCountriesCurrencies } from "../../redux/actions";
-import "./crypto.css";
-import { Graph } from "./graph";
 import { useSelector } from "react-redux";
+import { CurrencyConvertor } from "./convertor";
+import { fetchCountriesCurrencies } from "../../redux/actions";
+import { Graph } from "./graph";
+import { Breadcrumb, Col, Row, Spin } from "antd";
+import "./crypto.css";
+import { Trending } from "./Trending";
 
 export const CryptoPage = () => {
   const { coin } = useParams();
   const [ crypto, setCrypto ] = useState(null);
   const currencies = fetchCountriesCurrencies();
-  const coinsData = useSelector((state) => console.log(state))
+  const coinsData = useSelector((state) => state?.coinsReducer?.coinsData);
   const userCurrency = useSelector((state) => state?.currencyReducer?.currency);
+  const [trending, setTrending] = useState([]);
+
+  useEffect(() => {
+    if (coinsData && userCurrency && coinsData?.[userCurrency]) {
+      setCrypto(coinsData[userCurrency]?.find((cryptoCoin) => (cryptoCoin.base === coin)));
+      setTrending([...coinsData[userCurrency]].filter((c)=>c.base !== coin).slice(0, 8));
+    }
+  }, [coin, coinsData, userCurrency]);
+
 
   const breadcrumbItems = [
     {
@@ -24,16 +34,12 @@ export const CryptoPage = () => {
     }
   ];
 
-
   if (crypto) {
     return (
       <div className="crypto-main-container">
         <div className="crypto-inner-container">
           <Row justify={'start'} className="breadcrumb">
-            <Breadcrumb
-              separator=">"
-              items={breadcrumbItems}
-            />
+            <Breadcrumb separator=">" items={breadcrumbItems} />
           </Row>
 
           <Row className="crypto-details mt-10" align={'middle'} justify={"space-between"}>
@@ -77,6 +83,10 @@ export const CryptoPage = () => {
               <div className="box">
                 <div className="convertor">
                   <CurrencyConvertor crypto={crypto} />
+                </div>
+
+                <div className="convertor">
+                  <Trending trending={trending} />
                 </div>
               </div>
             </Col>

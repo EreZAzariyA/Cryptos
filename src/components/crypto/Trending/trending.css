@@ -1,0 +1,16 @@
+.trending-container {
+  padding: 20px;
+  background-color: beige;
+}
+
+.trending-container .title {
+  font-family: Inter;
+  font-size: 23px;
+  font-weight: 600;
+}
+
+.trending-container .change-icon {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
