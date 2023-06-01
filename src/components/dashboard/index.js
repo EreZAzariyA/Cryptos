@@ -3,11 +3,11 @@ import { DashboardFirst } from "./first";
 import { Highlights } from "./highlights";
 import { useResize } from "../../utils/helpers";
 import { CoinList } from "../coin-list";
-import { useLiveData } from "../../utils/useLiveData";
 import "./dashboard.css";
+import { useSelector } from "react-redux";
 
 export const Dashboard = () => {
-  const liveData = useLiveData();
+  const coinsData = useSelector((state) => state?.coinsReducer?.coinsData);
   const { isResponsive } = useResize();
   const [ withHighlights, setWithHighlights ] = useState(true);
 
@@ -23,11 +23,11 @@ export const Dashboard = () => {
           
           {withHighlights && !isResponsive &&
             <div className="highlights">
-              <Highlights liveData={liveData} />
+              <Highlights coinsData={coinsData} />
             </div>
           }
           <div className="list">
-            <CoinList liveData={liveData} />
+            <CoinList coinsData={coinsData} />
           </div>
           
         </div>

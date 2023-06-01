@@ -4,7 +4,7 @@ import { combineReducers } from 'redux';
 import { CoinsTypes } from '../utils/helpers';
 
 
-const reducer = createReducer({}, (handleAction) => [
+const reducer = createReducer(null, (handleAction) => [
   handleAction(MainActions.setCoinsData, (state, { payload }) => {
     return { ...state, ...payload };
   }),
@@ -20,14 +20,14 @@ const reducer = createReducer({}, (handleAction) => [
   }),
 ]);
 
-const liveDataReducer = createReducer({}, (handleAction) => [
-  handleAction(MainActions.setLiveCoinsData, (state, { payload }) => {
-    return {
-      ...state,
-      ...payload
-    }
-  })
-]);
+// const liveDataReducer = createReducer(null, (handleAction) => [
+//   handleAction(MainActions.setLiveCoinsData, (state, { payload }) => {
+//     return {
+//       ...state,
+//       ...payload
+//     }
+//   })
+// ]);
 
 const setCurrencySet = (state = {currency: CoinsTypes.USD}, action) => {
   switch (action.type) {
@@ -43,5 +43,5 @@ const setCurrencySet = (state = {currency: CoinsTypes.USD}, action) => {
 export default combineReducers({
   coinsReducer: reducer,
   currencyReducer: setCurrencySet,
-  liveDataReducer: liveDataReducer
+  // liveDataReducer: liveDataReducer
 });

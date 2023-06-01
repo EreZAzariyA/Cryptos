@@ -1,29 +1,30 @@
 import { Link, useParams } from "react-router-dom";
 import { Breadcrumb, Col, Row, Spin } from "antd";
-import { useCurrencySet } from "../../utils/useCurrencySet";
 import { useEffect, useState } from "react";
 import { CurrencyConvertor } from "../convertor";
 import { fetchCountriesCurrencies } from "../../redux/actions";
-import { useLiveData } from "../../utils/useLiveData";
 import "./crypto.css";
 import { Graph } from "./graph";
+import { useSelector } from "react-redux";
 
 export const CryptoPage = () => {
   const { coin } = useParams();
-  const { currencySet, userCurrency } = useCurrencySet();
   const [ crypto, setCrypto ] = useState(null);
   const currencies = fetchCountriesCurrencies();
-  const liveDataSet = useLiveData();
+  // const liveDataSet = []
+  const coinsData = useSelector((state) => console.log(state))
+  const userCurrency = useSelector((state) => state?.currencyReducer?.currency);
 
 
-  useEffect(() => {
-    if (liveDataSet) {
-      const cryptoCoin = liveDataSet.find((crypto) => (crypto.base === coin));
-      if (cryptoCoin) {
-        setCrypto(cryptoCoin);
-      };
-    };
-  }, [coin, liveDataSet]);
+
+  // useEffect(() => {
+  //   if (liveDataSet) {
+  //     const cryptoCoin = liveDataSet.find((crypto) => (crypto.base === coin));
+  //     if (cryptoCoin) {
+  //       setCrypto(cryptoCoin);
+  //     };
+  //   };
+  // }, [coin, liveDataSet]);
 
   const breadcrumbItems = [
     {

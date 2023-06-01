@@ -1,7 +1,4 @@
-// import moment from 'moment';
 import { useEffect, useState } from 'react';
-// import useWebSocket from "react-use-websocket";
-// import { useDispatch, useSelector } from "react-redux"
 import {
   XAxis,
   YAxis,
@@ -16,8 +13,6 @@ import moment from 'moment/moment';
 // import { numberWithCommas } from '../../utils/helpers';
 
 
-// const weekDays = moment().localeData().weekdays();
-// const format = 'HH:mm';
 // const URL = 'wss://ws-feed.pro.coinbase.com';
 
 export const Charts = (props) => {
@@ -29,40 +24,9 @@ export const Charts = (props) => {
   useEffect(() => {
     if (cryptoHistory?.length) {
       setDataHistory(cryptoHistory.map((set) => ({uv: Number(set.price).toFixed(2), name: moment(set.time).format('HH:mm')})));
-      // console.log();
     }
   }, [cryptoHistory]);
   
-  // const { readyState, sendJsonMessage, lastJsonMessage } = useWebSocket(URL);
-  // const coins = useSelector((state)=>state?.coinsData);
-  // const [mapCoins, setMapCoins] = useState([]);
-
-
-  // const [ range, setRange ] = useState({range: [moment().startOf(selectedRange).valueOf(), moment().endOf(selectedRange).valueOf()], granularity: 1440 });
-  // const [ labels, setLabels ] = useState({start: null, end: null, labels: []});
-  // const dispatch = useDispatch();
-
-  // useEffect(() => {
-	// 	if (readyState === ReadyState.OPEN) {
-	// 		sendJsonMessage({
-	// 			type: "subscribe",
-	// 			product_ids: [`${coin.base}-${coin.currency}`],
-	// 			channels: ['ticker'],
-	// 		});
-	// 	}
-	// }, [readyState]);
-
-  // useEffect(() => {
-	// 	if (lastJsonMessage) {
-	// 		const { channels, ...payload } = lastJsonMessage;
-  //     const coinSymbol = payload.product_id;
-  //     if (coinSymbol) {
-  //       console.log(payload);
-  //     }
-  //   }
-	// }, [lastJsonMessage]);
-
-
 
   // useEffect(() => {
   //   if (mapCoins?.length) {

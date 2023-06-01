@@ -4,21 +4,23 @@ import { formatHightPrice, numberWithCommas, useResize } from '../../utils/helpe
 import { ArrowDownOutlined, ArrowUpOutlined } from '@ant-design/icons';
 import { fetchCurrencySymbol } from '../../redux/actions';
 import { NavLink } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 
 export const CoinList = (props) => {
-  const { liveData } = props;
+  const { coinsData } = props;
   const { isMobile } = useResize();
   const [ dataSource, setDataSource ] = useState([]);
+  const currency = useSelector((state) => state?.currencyReducer?.currency);
 
   useEffect(() => {
-    if (liveData?.length) {
-      liveData.forEach((coin) => {
-        coin.num = liveData.indexOf(coin) + 1;
+    if (coinsData && coinsData?.[currency]) {
+      coinsData[currency].forEach((coin) => {
+        coin.num = coinsData[currency].indexOf(coin) + 1;
         coin.key = coin.id
       })
-      setDataSource(liveData);
+      setDataSource(coinsData[currency]);
     };
-  }, [liveData]);
+  }, [coinsData, currency]);
 
   const columns = [
     {
@@ -175,7 +177,6 @@ export const CoinList = (props) => {
       getPopupContainer={'list-table'}
       columns={columns}
       dataSource={dataSource}
-      loading={!liveData?.length}
       scroll={{
         x: 1700,
         y: 650

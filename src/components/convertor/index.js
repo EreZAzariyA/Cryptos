@@ -4,12 +4,12 @@ import { InfoCircleOutlined } from '@ant-design/icons';
 import "./convertor.css";
 import { customIcon } from "../../utils/helpers";
 import { fetchCountriesCurrencies } from "../../redux/actions";
-import { useCurrencySet } from "../../utils/useCurrencySet";
+import { useSelector } from "react-redux";
 
 
 
 export const CurrencyConvertor = ({crypto}) => {
-  const { currencySet, userCurrency } = useCurrencySet();
+  const userCurrency = useSelector((state) => state?.currencyReducer?.currency);
   const [currencyToExchange, setCurrencyToExchange] = useState(userCurrency);
   const [valueToExchange, setValueToExchange] = useState(1);
   const [returnedValue, setReturnedValue] = useState(parseFloat(valueToExchange * crypto?.latest)?.toFixed(2))

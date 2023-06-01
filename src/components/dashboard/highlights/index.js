@@ -9,18 +9,22 @@ import "./highlights.css";
 const box_table_coins_length = 3;
 
 export const Highlights = (props) => {
-  const { liveData } = props;
+  const { coinsData } = props;
   const currency = useSelector((state) => state?.currencyReducer?.currency);
   const [topCoins, setTopCoins] = useState([]);
   const [recentlyAdded, setRecentlyAdded] = useState([]);
   const [trending, setTrending] = useState([]);
 
   useEffect(() => {
-    if (liveData) {
-      findTopCoins(liveData);
-      findRecentlyAddedCoins(liveData);
+    if (coinsData && coinsData?.[currency]) {
+      const mappedList = [...coinsData[currency]].map((crypto) => ({
+        ...crypto,
+        key: crypto.base
+      }));
+      findTopCoins(mappedList);
+      findRecentlyAddedCoins(mappedList);
     }
-  }, [currency, liveData]);
+  }, [currency, coinsData]);
 
   const findTopCoins = (coins) => {
     const sortedCoins = [...coins].sort((a, b) => b.latest_price.percent_change.day - a.latest_price.percent_change.day);
@@ -119,7 +123,7 @@ export const Highlights = (props) => {
     return (
       <Table
         rootClassName="highlight-table"
-        loading={!liveData}
+        loading={!coinsData}
         key={type}
         pagination={false}
         showHeader={false}
@@ -134,7 +138,6 @@ export const Highlights = (props) => {
     <div className="highlights-main-container">
       <div className="highlights-inner-container">
         <div className="highlights">
-          {/* Boxes: */}
           <div className="box top">
             <div className="box-head">
               <div className="box-title">

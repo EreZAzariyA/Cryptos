@@ -11,7 +11,7 @@ import {
   Area,
   ResponsiveContainer,
 } from 'recharts';
-import { useCryptoHistory } from '../../../utils/useCryptoHistory';
+import { useCryptoHistory } from '../../../hooks/useCryptoHistory';
 import moment from 'moment/moment';
 // import { numberWithCommas } from '../../utils/helpers';
 
