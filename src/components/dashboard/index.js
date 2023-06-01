@@ -3,13 +3,11 @@ import { DashboardFirst } from "./first";
 import { Highlights } from "./highlights";
 import { useResize } from "../../utils/helpers";
 import { CoinList } from "../coin-list";
-import { Navbar } from "../navbar";
-
+import { useLiveData } from "../../utils/useLiveData";
 import "./dashboard.css";
 
 export const Dashboard = () => {
-  
-  const liveDataSet = [];
+  const liveData = useLiveData();
   const { isResponsive } = useResize();
   const [ withHighlights, setWithHighlights ] = useState(true);
 
@@ -20,19 +18,18 @@ export const Dashboard = () => {
   return(
     <div className="dashboard-main-container">
       <div className="dashboard-inner-container">
-        <div className="navbar">
-          <Navbar />
-        </div>
         <div className="dashboard">
           <DashboardFirst withHighlights={withHighlights} displayHighlights={displayHighlights} />
+          
           {withHighlights && !isResponsive &&
             <div className="highlights">
-              <Highlights liveDataSet={liveDataSet} />
+              <Highlights liveData={liveData} />
             </div>
           }
           <div className="list">
-            <CoinList liveDataSet={liveDataSet} />
+            <CoinList liveData={liveData} />
           </div>
+          
         </div>
       </div>
     </div>

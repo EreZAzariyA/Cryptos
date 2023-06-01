@@ -6,19 +6,19 @@ import { fetchCurrencySymbol } from '../../redux/actions';
 import { NavLink } from 'react-router-dom';
 
 export const CoinList = (props) => {
-  const { liveDataSet } = props;
+  const { liveData } = props;
   const { isMobile } = useResize();
   const [ dataSource, setDataSource ] = useState([]);
 
   useEffect(() => {
-    if (liveDataSet?.length) {
-      liveDataSet.forEach((coin) => {
-        coin.num = liveDataSet.indexOf(coin) + 1;
+    if (liveData?.length) {
+      liveData.forEach((coin) => {
+        coin.num = liveData.indexOf(coin) + 1;
         coin.key = coin.id
       })
-      setDataSource(liveDataSet);
+      setDataSource(liveData);
     };
-  }, [liveDataSet]);
+  }, [liveData]);
 
   const columns = [
     {
@@ -175,7 +175,7 @@ export const CoinList = (props) => {
       getPopupContainer={'list-table'}
       columns={columns}
       dataSource={dataSource}
-      loading={!liveDataSet?.length}
+      loading={!liveData?.length}
       scroll={{
         x: 1700,
         y: 650
