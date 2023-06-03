@@ -5,7 +5,7 @@ import { fetchCurrencySymbol } from '../../redux/actions';
 import { formatHightPrice, numberWithCommas, useResize } from '../../utils/helpers';
 import { Col, Row, Table } from "antd";
 import { ArrowDownOutlined, ArrowUpOutlined } from '@ant-design/icons';
-import { Charts } from '../charts/charts';
+import { Charts } from './charts';
 
 export const CoinList = (props) => {
   const { coinsData } = props;
@@ -169,7 +169,8 @@ export const CoinList = (props) => {
     //   render: (_,record) => {
     //     return <Charts coin={record} />
     //   },
-    //   width: 200
+    //   width: 200,
+    //   shouldCellUpdate: (a, b) => (false),
     // },
   ];
 

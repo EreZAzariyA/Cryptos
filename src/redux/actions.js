@@ -9,14 +9,28 @@ export const ActionsTypes = {
 
 export const fetchCoinsData = async (currency = CoinsTypes.USD) => {
   try {
-    const response = await fetch(`https://coinbase.com/api/v2/assets/search?base=${currency}&filter=listed&include_prices=true&resolution=day&sort=rank`);
+    const response = await fetch(`https://coinbase.com/api/v2/assets/search?base=${currency}&filter=listed&include_prices=true&resolution=week&sort=rank`);
     const data = await response.json();
     const coins = data?.data ? data.data.filter((coin)=>(coin.symbol !== 'ETH2')) : [];
+    // console.log(coins[0]?.prices);
     return coins;
     // return data?.data ? data.data.filter((coin)=>(coin.symbol !== 'ETH2')) : [];
   } catch (error) {
     console.log('Error fetching data:', error);
   }
+};
+// const fetchData = async (crypto, currency) => {
+  // const response = await fetch(`https://api.coinbase.com/v2/prices/${crypto}-${currency}/historic`);
+  // // const response = await fetch(`https://api.pro.coinbase.com/products/${crypto}-${currency}/candles?start=${moment().add(-5, 'day').toJSON()}&end=${moment().toJSON()}&granularity=3600`);
+
+  // const history = response.json();
+  // return history;
+// };
+export const fetchCryptoHistory = async (crypto, currency) => {
+  const response = await fetch(`https://api.coinbase.com/v2/prices/${crypto}-${currency}/historic`);
+  // const response = await fetch(`https://api.pro.coinbase.com/products/${crypto}-${currency}/candles?start=${moment().add(-5, 'day').toJSON()}&end=${moment().toJSON()}&granularity=3600`);
+  const history = response.json();
+  return history;
 };
 
 export const MainActions = {
