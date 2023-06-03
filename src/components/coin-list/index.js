@@ -31,8 +31,7 @@ export const CoinList = (props) => {
       width: 70,
       fixed: isMobile ? '' : 'left',
       defaultSortOrder: 'ascend',
-      // shouldCellUpdate: () => (false),
-      // sorter: (a, b) => (a.num - b.num),
+      sorter: (a, b) => (a.num - b.num),
       render: (val) => (<p>{val}</p>)
     },
     {
@@ -59,9 +58,7 @@ export const CoinList = (props) => {
       },
       fixed: isMobile ? '' : 'left',
       width: isMobile ? 120 : 220,
-      // sorter: (a, b) => {
-      //   return a.base.localeCompare(b.base)
-      // }
+      sorter: (a, b) => (a.base.localeCompare(b.base))
     },
     {
       key: 'latest',
@@ -88,6 +85,9 @@ export const CoinList = (props) => {
         );
       },
       width: 150,
+      sorter: (a, b) => (
+        a.latest - b.latest
+      ),
     },
     {
       key: 'last_changes',
@@ -101,9 +101,9 @@ export const CoinList = (props) => {
             // const arrow = record.latest_price.percent_change.hour >= 0 ? <ArrowUpOutlined /> : <ArrowDownOutlined />;
             return <p style={{color: textColor}}>{parseFloat(record.latest_price.percent_change.hour * 100).toFixed(2)}%</p>
           },
-          // sorter: (a, b) => (
-          //   a.latest_price.percent_change.hour - b.latest_price.percent_change.hour
-          // ),
+          sorter: (a, b) => (
+            a.latest_price.percent_change.hour - b.latest_price.percent_change.hour
+          ),
           width: 80
         },
         {
@@ -113,9 +113,9 @@ export const CoinList = (props) => {
             const textColor = record.latest_price.percent_change.day >= 0 ? 'green' : 'red';
             return <p style={{color: textColor}}>{parseFloat(record.latest_price.percent_change.day * 100).toFixed(2)}%</p>
           },
-          // sorter: (a, b) => (
-          //   a.latest_price.percent_change.day - b.latest_price.percent_change.day
-          // ),
+          sorter: (a, b) => (
+            a.latest_price.percent_change.day - b.latest_price.percent_change.day
+          ),
           width: 80
         },
         {
@@ -125,9 +125,9 @@ export const CoinList = (props) => {
             const textColor = record.latest_price.percent_change.week >= 0 ? 'green' : 'red';
             return <p style={{color: textColor}}>{parseFloat(record.latest_price.percent_change.week * 100).toFixed(2)}%</p>
           },
-          // sorter: (a, b) => (
-          //   a.latest_price.percent_change.week - b.latest_price.percent_change.week
-          // ),
+          sorter: (a, b) => (
+            a.latest_price.percent_change.week - b.latest_price.percent_change.week
+          ),
           width: 80
         },
       ]
@@ -162,26 +162,27 @@ export const CoinList = (props) => {
       },
       width: isMobile ? 100 : 200
     },
-    {
-      key: 'last_7_days',
-      title: 'Last 7 days',
-      dataIndex: 'volume_24h',
-      render: (_,record) => {
-        return <Charts coin={record} />
-      },
-      width: 200
-    },
+    // {
+    //   key: 'last_7_days',
+    //   title: 'Last 7 days',
+    //   dataIndex: 'volume_24h',
+    //   render: (_,record) => {
+    //     return <Charts coin={record} />
+    //   },
+    //   width: 200
+    // },
   ];
 
   return(
     <Table
       getPopupContainer={'list-table'}
       columns={columns}
+      loading={!coinsData?.[currency]}
       dataSource={dataSource}
       scroll={{
         x: 1700,
         y: 650
       }}
-   />
+    />
   );
 };

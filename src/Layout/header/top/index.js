@@ -28,6 +28,22 @@ export const TopHeader = () => {
     };
   }, [coinsData, currency, dispatch]);
 
+  useEffect(() => {
+    let timer;
+    if (coinsData) {
+      timer = setInterval(async () => {
+        const promises = Object.keys(coinsData).map(async (currency) => {
+          const coins = await fetchCoinsData(currency);
+          return [currency, coins];
+        });
+        const results = await Promise.all(promises);
+        const updatedCoinsData = Object.fromEntries(results);
+        dispatch(MainActions.setCoinsData({ ...coinsData, ...updatedCoinsData }));
+      }, 1000 * 2);
+    }
+    return () => clearInterval(timer);
+  }, [coinsData]);
+
   return (
     <div className="top-header-main-container">
       <div className="top-header-inner-container">
