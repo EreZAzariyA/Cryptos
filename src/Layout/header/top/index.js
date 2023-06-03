@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { Options } from "./options";
-import { MainActions, fetchCoinsData } from "../../../redux/actions";
+import { MainActions, SocketActions, fetchCoinsData } from "../../../redux/actions";
 import { Button } from "antd";
 import { CoinsTypes } from "../../../utils/helpers";
 import "./top.css";
@@ -14,19 +14,29 @@ export const TopHeader = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
+    dispatch(SocketActions.connect());
+  }, []);
+  
+  useEffect(() => {
     if (!coinsData) {
       fetchCoinsData().then((coins) => {
         setCount(coins.length);
         dispatch(MainActions.setCoinsData({[CoinsTypes.USD]: coins}));
+        dispatch(SocketActions.getLiveData());
       });
-    };
-    if (coinsData && !coinsData?.[currency]) {
-      fetchCoinsData(currency).then((coins) => {
-        setCount(coins.length);
-        dispatch(MainActions.setCoinsData({...coinsData, [currency]: coins}));
-      });
-    };
+    } else {
+      if (coinsData && !coinsData?.[currency]) {
+        fetchCoinsData(currency).then((coins) => {
+          setCount(coins.length);
+          dispatch(MainActions.setCoinsData({...coinsData, [currency]: coins}));
+          dispatch(SocketActions.getLiveData(currency));
+          console.log('new Coins');
+        });
+      };
+    }
+
   }, [coinsData, currency, dispatch]);
+
 
   return (
     <div className="top-header-main-container">

@@ -1,6 +1,10 @@
-import { legacy_createStore as createStore} from 'redux';
+import { applyMiddleware, compose, legacy_createStore as createStore} from 'redux';
 import mainReducer from './reducer'
+import { socketMiddleware } from './middleware';
 
-const store = createStore(mainReducer, window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__());
+const webSocket = new WebSocket("wss://ws-feed.exchange.coinbase.com");
+const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+
+const store = createStore(mainReducer, composeEnhancers(applyMiddleware(socketMiddleware(webSocket))));
 
 export default store;

@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { NavLink } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { fetchCurrencySymbol } from '../../redux/actions';
@@ -12,26 +12,27 @@ export const CoinList = (props) => {
   const { isMobile } = useResize();
   const [ dataSource, setDataSource ] = useState([]);
   const currency = useSelector((state) => state?.currencyReducer?.currency);
-
+  
   useEffect(() => {
     if (coinsData && coinsData?.[currency]) {
-      coinsData[currency].forEach((coin) => {
-        coin.num = coinsData[currency].indexOf(coin) + 1;
-        coin.key = coin.id
-      })
-      setDataSource(coinsData[currency]);
-    };
+      const coinsSet = coinsData[currency];
+      coinsSet.forEach((coin, index) => {
+        coin.num = index + 1;
+        coin.key = coin.id;
+      });
+      setDataSource(coinsSet);
+    }
   }, [coinsData, currency]);
 
   const columns = [
     {
-      key: 'num',
+      key: 'id',
       title: 'Rank',
       dataIndex: 'num',
       width: 70,
       fixed: isMobile ? '' : 'left',
       defaultSortOrder: 'ascend',
-      // shouldCellUpdate: () => (false),
+      shouldCellUpdate: (a,b) => (a.num !== b.num ),
       // sorter: (a, b) => (a.num - b.num),
       render: (val) => (<p>{val}</p>)
     },
@@ -162,26 +163,28 @@ export const CoinList = (props) => {
       },
       width: isMobile ? 100 : 200
     },
-    {
-      key: 'last_7_days',
-      title: 'Last 7 days',
-      dataIndex: 'volume_24h',
-      render: (_,record) => {
-        return <Charts coin={record} />
-      },
-      width: 200
-    },
+    // {
+    //   key: 'last_7_days',
+    //   title: 'Last 7 days',
+    //   dataIndex: 'volume_24h',
+    //   render: (_,record) => {
+    //     return <Charts coin={record} />
+    //   },
+    //   width: 200,
+    // },
   ];
 
   return(
     <Table
       getPopupContainer={'list-table'}
       columns={columns}
-      dataSource={dataSource}
+      // dataSource={coinsData?.[currency]}
+      loading={!coinsData?.[currency]}
+      dataSource={coinsData?.[currency]}
       scroll={{
         x: 1700,
         y: 650
       }}
-   />
+    />
   );
 };

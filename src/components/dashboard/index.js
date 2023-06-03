@@ -21,11 +21,11 @@ export const Dashboard = () => {
         <div className="dashboard">
           <DashboardFirst withHighlights={withHighlights} displayHighlights={displayHighlights} />
           
-          {withHighlights && !isResponsive &&
+          {/* {withHighlights && !isResponsive &&
             <div className="highlights">
               <Highlights coinsData={coinsData} />
             </div>
-          }
+          } */}
           <div className="list">
             <CoinList coinsData={coinsData} />
           </div>
